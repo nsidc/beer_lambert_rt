@@ -1,41 +1,17 @@
-# Template instructions (delete me)
-
-- [ ] Replace the following variables in this README:
-    * `{title}`: The title of this application / repository.
-    * `{audience}`: The target audience of this repository.
-    * `{utility}`: Things this repository enables the audience to do.
-    * `{requirements}`: A bulleted list of pre-requisites.
-    * `{installation}`: Describe how to install this software, with platform-specific
-      instructions if necessary.
-    * `{usage}`: Describe how to use this software, with platform-specific instructions
-      if necessary.
-    * `{troubleshooting}`: Describe any tips or tricks in case the user runs into
-      problems.
-
-- [ ] In the "Level of Support" section, choose one LoS and delete the other.
-
-- [ ] Choose a license, rename it to `LICENSE`, and delete the unused one.
-    * The `NASA` license must be used for DAAC projects. The contract number is our
-      5-year DAAC contract and does not need to be changed or maintained in your
-      codebase unless work extends into a new 5-year contract period.
-    * The `GENERAL` license is for all other work.
-
-- [ ] Delete this section.
-
-
 <img alt="NSIDC logo" src="https://nsidc.org/themes/custom/nsidc/logo.svg" width="150" />
 
 
-# {title}
+# A Beer-Lambert Radiative Transfer Model
 
-{title} enables {audience} to {utility}.
+The code in this repository was used to calculate under-ice Photosynthetically Active Radiation for the Arctic Ocean.
+
+The code was used in Stroeve et al (2021)
+
+Stroeve J, Vancoppenolle M, Veyssiere G, Lebrun M, Castellani G, Babin M, Karcher M, Landy J, Liston GE and Wilkinson J (2021) A Multi-Sensor and Modeling Approach for Mapping Light Under Sea Ice During the Ice-Growth Season. Front. Mar. Sci. 7:592337. [doi: 10.3389/fmars.2020.592337](https://www.frontiersin.org/articles/10.3389/fmars.2020.592337/full)
 
 
 ## Level of Support
 
-* This repository is fully supported by NSIDC. If you discover any problems or bugs,
-  please submit an Issue. If you would like to contribute to this repository, you may fork
-  the repository and submit a pull request. 
 * This repository is not actively supported by NSIDC but we welcome issue submissions and
   pull requests in order to foster community contribution.
 
@@ -45,22 +21,25 @@ nsidc@nsidc.org for more information.
 
 ## Requirements
 
-{requirements}
+{requirements}: A bulleted list of pre-requisites.
 
 
 ## Installation
 
-{installation}
+{installation}: Describe how to install this software, with platform-specific
+      instructions if necessary.
 
 
 ## Usage
 
-{usage}
+{usage}: Describe how to use this software, with platform-specific instructions
+      if necessary.
 
 
 ## Troubleshooting
 
-{troubleshooting}
+{troubleshooting}: Describe any tips or tricks in case the user runs into
+      problems.
 
 
 ## License
@@ -75,5 +54,4 @@ See [Code of Conduct](CODE_OF_CONDUCT.md).
 
 ## Credit
 
-This software was developed by the National Snow and Ice Data Center with funding from
-multiple sources.
+This work resulted from the NERC project (NE/R012725/1), known as EcoLight, part of the Changing Arctic Ocean programme, jointly funded by the UKRI Natural Environment Research Council (NERC) and the German Federal Ministry of Education and Research (BMBF). JS and GL were also funded under NASA NNX16AK85G. JL was funded under NERC Diatom-ARCTIC (NE/R012849/1). JS was also partially funded under the Canada 150 Chair Program and NASA Grant 80NSSC20K1121.
