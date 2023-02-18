@@ -1,0 +1,13 @@
+name: beer_lambert_rt
+channels:
+ - conda-forge
+dependencies:
+ - python==3.10
+
+  ################################################################
+  # Imported dependencies and extensions (and related typestubs) #
+  ################################################################
+
+ - jupyterlab
+ - numpy~=1.24
+ - pytest
