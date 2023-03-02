@@ -538,7 +538,7 @@ for ii in range(0,3):
 
             for ll in range(15):
                 t_s_hom[:,ll] = ((1-alb[:]) * i_s_hom[:,ll])  ;
-                Fsw_tr_new[:,ll] = Fsw0[:]* ((t_s_hom[:,ll] * f_bi[:]*3.51) + (T_ow[:] * (1-f_bi[:]))*2.30);
+                Fsw_tr_new[:,ll] = Fsw0[:]* ((t_s_hom[:,ll] * f_bi[:]*3.51) + (T_ow[:] * (1-f_bi[:]))*2.30);  # f_bi is is SIC and 3.51 is W - > PAR conversion, 2.31 is also W->PAR conv, why is it different?
 
 # sum ITD 15 classes and apply pdf
             t_s_hom_sum=np.zeros(361*361)
