@@ -10,4 +10,11 @@ dependencies:
 
  - jupyterlab
  - numpy~=1.24
+ - xarray
+ - rioxarray
+ - dask
+ - netCDF4
+ - bottleneck
+ - matplotlib
+ - cartopy
  - pytest
