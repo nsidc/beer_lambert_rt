@@ -1,16 +1,45 @@
-# Datasets
+---
+title: Datasets
+bibliography: references.bib
+---
+
+# Overview
 
 This documents describes the datasets used in
 @stroeve_multi-sensor_2021.  Three datasets are used:
 
-- Sea Ice Concentration from Passive Microwave
-  (@digirolamo_ice_concentration_2022).
+- Sea Ice Concentrations from Nimbus-7 SMMR and DMSP SSM/I-SSMIS
+  Passive Microwave Data, Version 2 (@digirolamo_ice_concentration_2022).
 - Surface albedo, incident shortwave radiation and surface temperature
   from the Extended AVHRR Polar Pathfinder (APP-x), Version 2
-  (@key_noaa_2016)
+  (@key_noaa_2016).  
 - Snow Depth from Lagrangian Snow Distributions for Sea-Ice
   Applications, Version 1 (NSIDC-0758) (@liston_glen_lagrangian_2020)
 - Sea Ice Thickness Jack Landy's 
 
 
 [Results](ftp://sidads.colorado.edu/pub/projects/SIPN/Ecolight)
+
+# Processing
+
+Daily grids of sea ice concentration, ice thickness, snow depth, along
+with surface albedo, daily incoming solar radiation at the surface and
+surface temperature, are reprojected and resampled to a common grid;
+the 25 km EASE Grid (see below for projection and grid definition).
+
+Unfortunately, not all datasets contain sufficient information to
+reproject and regrid.  Projection and grid definitions for each
+dataset are included below for reference.
+
+| Dataset  | Proj4 String  | Grid |
+|--------|--------|-------|
+| Sea Ice Concentrations from Nimbus-7 SMMR and DMSP SSM/I-SSMIS
+|Passive Microwave Data, Version 2  | +proj=stere +lat_0=90 +lat_ts=70
+|+lon_0=-45 +k=1 +x_0=0 +y_0=0 +a=6378273 +b=6356889.449 +units=m
+|+no_defs  | 304x348 |
+| pear   | 1.37   |
+| orange | 3.09   |
+
+: Fruit prices {tbl-colwidths="[50,25,25]"}
+
+
