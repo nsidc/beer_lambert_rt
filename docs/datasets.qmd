@@ -9,12 +9,12 @@ This documents describes the datasets used in
 @stroeve_multi-sensor_2021.  Three datasets are used:
 
 - Sea Ice Concentrations from Nimbus-7 SMMR and DMSP SSM/I-SSMIS
-  Passive Microwave Data, Version 2 (@digirolamo_ice_concentration_2022).
+  Passive Microwave Data, Version 2 (@digirolamo_ice_concentration_2022).  [Link](https://nsidc.org/data/g02135/versions/3)
 - Surface albedo, incident shortwave radiation and surface temperature
   from the Extended AVHRR Polar Pathfinder (APP-x), Version 2
-  (@key_noaa_2016).  
+  (@key_noaa_2016).  [User Guide](https://www.ncei.noaa.gov/pub/data/sds/cdr/CDRs/AVHRR_Extended_Polar_Pathfinder/AlgorithmDescription_01B-24b.pdf)
 - Snow Depth from Lagrangian Snow Distributions for Sea-Ice
-  Applications, Version 1 (NSIDC-0758) (@liston_glen_lagrangian_2020)
+  Applications, Version 1 ([NSIDC-0758](https://nsidc.org/data/nsidc-0758/versions/1#anchor-2)) (@liston_glen_lagrangian_2020)
 - Sea Ice Thickness Jack Landy's 
 
 
@@ -42,4 +42,8 @@ dataset are included below for reference.
 
 : Fruit prices {tbl-colwidths="[50,25,25]"}
 
+| Name | Proj4 String | URL |
+|------|--------------|-----|
+|NSIDC Sea Ice Polar Stereographic North | +proj=stere +lat_0=90 +lat_ts=70 +lon_0=-45 +k=1 +x_0=0 +y_0=0 +a=6378273 +b=6356889.449 +units=m +no_defs | https://nsidc.org/data/user-resources/help-center/guide-nsidcs-polar-stereographic-projection |
 
+: Projections {tbl-colwidths="[25,50,25]"}
