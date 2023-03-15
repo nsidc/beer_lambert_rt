@@ -71,7 +71,8 @@ def transmission_coef_snow(hsnow, surface_temperature):
     raise NotImplemetedError("Fix this now")
 
 
-def transmission_snow_covered_ice(hsnow, hice, albedo, surface_temperature):
+def transmission_snow_covered_ice(hsnow, hice, albedo,
+                                  hssl, i0_snow, ksnow, kice):
     """Returns transmittance for snow covered ice.
 
     :hsnow: float, scalar or ndarray of snow depth in m
@@ -81,9 +82,7 @@ def transmission_snow_covered_ice(hsnow, hice, albedo, surface_temperature):
 
     :returns: scalar or ndarray of floats of transmittance
     """
-    ksnow = attenuation_coef_snow(hsnow, surface_temperature)
-    hsnow_adj = adjust_hsnow(hsnow, surface_temperature)
-    i0_snow = transmission_coef_snow(hsnow, surface_temperature)
+    hsnow_adj = hsnow - hssl
     esnow = np.exp(-1. * ksnow * hsnow_adj)
     eice = np.exp(-1. * k_ice * hice)
     return i0_snow * (1-albedo) * esnow * eice
