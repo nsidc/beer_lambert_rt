@@ -34,8 +34,8 @@ Imported dependences are listed in `environment.yml`.
 ## Installation
 
 1. [Fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo) the repository to your GitHub user account.
-2. [Clone](https://docs.github.com/en/get-started/quickstart/fork-a-repo#cloning-your-forked-repository) your forked repository to your local machine.  The example below is for HTTPS.
-   `git clone https://github.com/YOUR-USERNAME/beer-lambert-rt`
+2. [Clone](https://docs.github.com/en/get-started/quickstart/fork-a-repo#cloning-your-forked-repository) your forked repository to your local machine.  The example below is for HTTPS.  
+   `git clone https://github.com/YOUR-USERNAME/beer-lambert-rt`  
    This will create a directory `beer-lambert-rt`
 3. `cd beer-lambert-rt`
 4. It is recommended to setup a new virtual environment to run the model.
