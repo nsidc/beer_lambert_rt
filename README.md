@@ -43,15 +43,15 @@ Imported dependences are listed in `environment.yml`.
 5. The package is written with tests.  To ensure that the code runs as expected run `pytest` from the command line.
    ```
    $ pytest
-   =========================================================================================== test session starts ===========================================================================================
-platform linux -- Python 3.10.0, pytest-7.2.1, pluggy-1.0.0
-rootdir: /home/apbarret/src/beer_lambert_rt
-plugins: anyio-3.6.2
-collected 7 items                                                                                                                                                                                         
-
-tests/test_transmission.py .......                                                                                                                                                                  [100%]
-
-============================================================================================ 7 passed in 0.13s ============================================================================================
+   ====================== test session starts ==============================================
+   platform linux -- Python 3.10.0, pytest-7.2.1, pluggy-1.0.0
+   rootdir: /home/apbarret/src/beer_lambert_rt
+   plugins: anyio-3.6.2
+   collected 7 items
+   
+   tests/test_transmission.py .......                                                 [100%]
+   
+   ===================== 7 passed in 0.13s =================================================
    ```
 
 ## Usage
