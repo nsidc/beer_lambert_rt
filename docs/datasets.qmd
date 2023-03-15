@@ -37,10 +37,12 @@ dataset are included below for reference.
 |Passive Microwave Data, Version 2  | +proj=stere +lat_0=90 +lat_ts=70
 |+lon_0=-45 +k=1 +x_0=0 +y_0=0 +a=6378273 +b=6356889.449 +units=m
 |+no_defs  | 304x348 |
-| pear   | 1.37   |
-| orange | 3.09   |
+| Lagrangian Snow Distributions for Sea-Ice Applications, Version 1 | +proj=laea +lat_0=90 +lon_0=0 +x_0=0 +y_0=0
++a=6371228 +b=6371228 +units=m +no_defs | 721x721 |
+| Extended AVHRR Polar Pathfinder (APP-x) | +proj=laea +lat_0=90 +lon_0=0 +x_0=0 +y_0=0
++a=6371228 +b=6371228 +units=m +no_defs | 361x361 |
 
-: Fruit prices {tbl-colwidths="[50,25,25]"}
+: Datasets {tbl-colwidths="[50,25,25]"}
 
 | Name | Proj4 String | URL |
 |------|--------------|-----|
