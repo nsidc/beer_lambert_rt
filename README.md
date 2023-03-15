@@ -21,10 +21,18 @@ nsidc@nsidc.org for more information.
 
 ## Requirements
 
-{requirements}: A bulleted list of pre-requisites.
+The package requires python 3.10 or later.
+
+Imported dependences are listed in `environment.yml`.
+
+- `numpy` is used for model calculations
+- `xarray` is used to load and write data
+- `matplotlib` and `cartopy` are used for plotting
+- `pytest` is used for code testing.
 
 
 ## Installation
+
 
 {installation}: Describe how to install this software, with platform-specific
       instructions if necessary.
