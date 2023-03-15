@@ -88,6 +88,25 @@ def transmission_snow_covered_ice(hsnow, hice, albedo,
     return i0_snow * (1-albedo) * esnow * eice
 
 
+def transmission_bare_ice(hice, albedo,
+                          hssl, i0_ice, kice):
+    """Returns transmittance for bare ice.
+
+    :hsnow: float, scalar or ndarray of snow depth in m
+    :hice: float, scalar or ndarray of ice thickness in m
+    :albedo: float, surface albedo
+    :surface_temperature: float, scalar or ndarray of surface temperature C
+    :hssl: float, thickness of surface scattering layer
+    :i0_ice: float, transmission parameter for ice
+    :kice: float, attenuation coefficient for ice
+
+    :returns: scalar or ndarray of floats of transmittance
+    """
+    hice_adj = hice - hssl
+    eice = np.exp(-1. * kice * hice_adj)
+    return i0_ice * (1 - albedo) * eice
+
+
 """
 There are several cases:
 
