@@ -33,15 +33,34 @@ Imported dependences are listed in `environment.yml`.
 
 ## Installation
 
+1. [Fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo) the repository to your GitHub user account.
+2. [Clone](https://docs.github.com/en/get-started/quickstart/fork-a-repo#cloning-your-forked-repository) your forked repository to your local machine.  The example below is for HTTPS.
+   `git clone https://github.com/YOUR-USERNAME/beer-lambert-rt`
+   This will create a directory `beer-lambert-rt`
+3. `cd beer-lambert-rt`
+4. It is recommended to setup a new virtual environment to run the model.
+   `conda env create -f environment.yml`
+5. The package is written with tests.  To ensure that the code runs as expected run `pytest` from the command line.
+   ```
+   $ pytest
+   =========================================================================================== test session starts ===========================================================================================
+platform linux -- Python 3.10.0, pytest-7.2.1, pluggy-1.0.0
+rootdir: /home/apbarret/src/beer_lambert_rt
+plugins: anyio-3.6.2
+collected 7 items                                                                                                                                                                                         
 
-{installation}: Describe how to install this software, with platform-specific
-      instructions if necessary.
+tests/test_transmission.py .......                                                                                                                                                                  [100%]
 
+============================================================================================ 7 passed in 0.13s ============================================================================================
+   ```
 
 ## Usage
 
 {usage}: Describe how to use this software, with platform-specific instructions
       if necessary.
+
+## Contributing
+We welcome issues and pull requests.  See the [contributing guide]() to contribute.
 
 
 ## Troubleshooting
