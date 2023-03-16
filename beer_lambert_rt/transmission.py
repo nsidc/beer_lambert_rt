@@ -120,6 +120,37 @@ def transmission_thin_ice(hsnow, hice, albedo):
                                  0., i0_ice, k_thin_ice)
 
 
+def get_hssl_ice(hice):
+    """
+    Returns the the thickness of the ice surface scattering layer
+
+    The thickness of the surface scattering layer is determined by a 
+    piecewise function of hice, where
+
+           | 0.0; hice < 0.5
+    hssl = | hice/3. - 1./6.; 0.5 =< hice < 0.8
+           | hssl_ice; hice > 0.8 
+    
+    I have no idea where this comes from.  Finding out.
+    """
+    ssl_slope = lambda hice: hice/3. - 1./6.
+    return np.piecewise(hice,
+                        [hice < 0.5, (hice >= 0.5) & (hice < 0.8), (hice >= 0.8)],
+                        [0.0, ssl_slope, hssl_ice])
+
+
+def get_attenuation_ice(hice):
+    """
+    Returns attenuation coefficient of ice based on hice
+
+           | k_thin_ice; hice < 0.1 
+    kice = | k_ice; hice >= 0.1
+    """
+    return np.piecewise(hice,
+                        [hice < 0.1, hice >= 0.1],
+                        [k_thin_ice, k_ice])
+
+
 """
 There are several cases:
 
