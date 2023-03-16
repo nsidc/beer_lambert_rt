@@ -72,6 +72,45 @@ def transmission_bare_ice(hice, albedo,
     return i0_ice * (1 - albedo) * eice
 
 
+def transmission_dry_snow(hsnow, hice, albedo):
+    """Returns transmittance for dry snow over ice"""
+    return transmission_snow_covered_ice(hsnow, hice, albedo,
+                                         hssl_dry_snow, i0_dry_snow,
+                                         k_dry_snow, k_ice)
+
+
+def transmission_shallow_wet_snow(hsnow, hice, albedo):
+    """Returns transmittance for shallow wet snow"""
+    return transmission_snow_covered_ice(hsnow, hice, albedo,
+                                         hssl_wet_snow, i0_wet_snow,
+                                         k_thin_wet_snow, k_ice)
+
+
+def transmission_deep_wet_snow(hsnow, hice, albedo):
+    """Returns transmittance for deep wet snow
+       Deep snow is hsnow > hssl_wet_snow
+    """
+    return transmission_snow_covered_ice(hsnow, hice, albedo,
+                                         hssl_wet_snow, i0_wet_snow,
+                                         k_wet_snow, k_ice)
+
+
+def transmission_thick_ice(hsnow, hice, albedo):
+    """Returns transmittance for thick ice"""
+    return transmission_bare_ice(hice, albedo,
+                                 hssl_ice, i0_ice, k_ice)
+
+
+def transmission_medium_ice1(hsnow, hice, albedo):
+    """Returns trasnmittance for bare ice between 0.5 and 0.8 m"""
+    hssl_adj = (1./3.)*hice-(1./6.)  # Check order and source
+    return transmission_bare_ice(hice, albedo,
+                                 hssl_adj, i0_ice, k_ice)
+
+def transmission_medium_ice2(hsnow, hice, albedo):
+
+def transmission_thin_ice(hsnow, hice, albedo):
+
 """
 There are several cases:
 
