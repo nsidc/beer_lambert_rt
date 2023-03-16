@@ -8,41 +8,6 @@ from beer_lambert_rt.constants import (hssl_ice, hssl_dry_snow, hssl_wet_snow,
                                        albedo_open_water)
 
 
-def attenuation_coef_snow(hsnow, surface_temperature):
-    """Returns the attenuation coeficient for snow based on
-       snow depth and whether snow is wet or dry based on
-       surface temperature.
-
-    :hsnow: snow depth in m
-    :surface_temperature: snow surface temperature in degree C
-
-    :return: attenuation coeficient
-    """
-    ksnow = k_dry_snow
-    if surface_temperature > 0.:
-        if hsnow <= hssl_wet_snow:
-            ksnow = k_thin_snow
-        else:
-            ksnow = k_wet_snow
-    return ksnow
-
-
-def adjust_hsnow(hsnow, surface_temperature):
-    """Adjusts hsnow to account for surface scattering layer
-    based on temperature.
-
-    :hsnow: snow depth in m
-    :surface_temperature: snow surface temperature in degree C
-
-    :return: attenuation coeficient
-    """
-    hsnow_adj = hsnow
-    if surface_temperature > 0.:
-        if hsnow > hssl_wet_snow:
-            hsnow_adj = hsnow - hssl_wet_snow
-    return hsnow_adj
-
-
 def transmission_open_water():
     """Returns transmittance for open water"""
     return 1 - albedo_open_water
