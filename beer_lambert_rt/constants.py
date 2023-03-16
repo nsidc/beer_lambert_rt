@@ -11,6 +11,7 @@ hssl_wet_snow = 0.03  # Wet snow
 
 # Attenuation coefficients - prefixed with k
 k_ice = 1.0        # Ice
+k_thin_ice = 12.0  # Thin ice
 k_dry_snow = 7.    # Dry snow
 k_wet_snow = 5.    # Wet snow
 k_thin_wet_snow = 40.  # Applied for hsnow > 0. and hsnow <= hssl_wet_snow

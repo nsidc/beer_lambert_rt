@@ -3,7 +3,7 @@
 import numpy as np
 
 from beer_lambert_rt.constants import (hssl_ice, hssl_dry_snow, hssl_wet_snow,
-                                       k_ice, k_dry_snow, k_wet_snow, k_thin_snow,
+                                       k_ice, k_thin_ice, k_dry_snow, k_wet_snow, k_thin_snow,
                                        i0_ice, i0_dry_snow, i0_wet_snow, i0_melt_ponds,
                                        albedo_open_water)
 
@@ -107,9 +107,18 @@ def transmission_medium_ice1(hsnow, hice, albedo):
     return transmission_bare_ice(hice, albedo,
                                  hssl_adj, i0_ice, k_ice)
 
+
 def transmission_medium_ice2(hsnow, hice, albedo):
+    """Returns transmittance for bare ice with thickness between 0.1 and 0.5 m"""
+    return transmission_bare_ice(hsnow, hice, albedo,
+                                 0., i0_ice, k_ice)
+    
 
 def transmission_thin_ice(hsnow, hice, albedo):
+    """Returns transmittance for bare ice with thickness < 0.1 m"""
+    return transmission_bare_ice(hsnow, hice, albedo,
+                                 0., i0_ice, k_thin_ice)
+
 
 """
 There are several cases:
