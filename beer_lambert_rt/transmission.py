@@ -120,7 +120,7 @@ def transmission_thin_ice(hsnow, hice, albedo):
                                  0., i0_ice, k_thin_ice)
 
 
-def get_hssl_ice(hice):
+def green_edge_hssl_ice(hice, hsnow, hpond):
     """
     Returns the the thickness of the ice surface scattering layer
 
@@ -134,21 +134,71 @@ def get_hssl_ice(hice):
     I have no idea where this comes from.  Finding out.
     """
     ssl_slope = lambda hice: hice/3. - 1./6.
-    return np.piecewise(hice,
-                        [hice < 0.5, (hice >= 0.5) & (hice < 0.8), (hice >= 0.8)],
-                        [0.0, ssl_slope, hssl_ice])
+    conditions = [
+        (hsnow > 0.),
+        (hpond > 0.),
+        hice < 0.5,
+        (hice >= 0.5) & (hice < 0.8),
+        (hice >= 0.8),
+    ]
+    choices = [
+        0.0,
+        0.0,
+        0.0,
+        ssl_slope,
+        hssl_ice,
+    ]
+    return np.piecewise(hice, conditions, choices)
 
 
-def get_attenuation_ice(hice):
+def select_attenuation_ice(hice):
     """
     Returns attenuation coefficient of ice based on hice
 
            | k_thin_ice; hice < 0.1 
     kice = | k_ice; hice >= 0.1
     """
-    return np.piecewise(hice,
-                        [hice < 0.1, hice >= 0.1],
-                        [k_thin_ice, k_ice])
+    return np.select(hice,
+                     [hice < 0.1, hice >= 0.1],
+                     [k_thin_ice, k_ice])
+
+
+def select_surface_transmission(hice, hsnow, hpond, surface_temperature):
+    """Selects i_0 based on surface type and temperature"""
+    conditions = [
+        hsnow == 0.,
+        hpond > 0.,
+        (hsnow > 0.) & (surface_temperature < 0.),
+        (hsnow > 0.) & (surface_temperature >= 0.),
+    ]
+    choices = [
+        i0_ice,
+        i0_melt_ponds,
+        i0_dry_snow,
+        i0_wet_snow,
+    ]
+    return np.select(conditions, choices, None)
+
+
+def green_edge_hssl_snow(hsnow, surface_temperature):
+    """Returns thickness of snow surface scattering layer following Green Edge study
+
+    Add reference here
+
+    hssl_snow = hssl_dry_snow
+    if hsnow > hssl_wet_snow and surface_temperature > 0. hssl_wet_snow, zero otherwise
+    """
+    conditions = [
+        (hsnow > 0.) & (surface_temperature <= 0.),
+        (hsnow > hssl_wet_snow) & (surface_temperature > 0.),
+        (hsnow <= hssl_wet_snow) & (surface_temperature > 0.),
+        ]
+    choices = [
+        hssl_dry_snow,
+        hssl_wet_snow,
+        0.
+        ]
+    return np.select(conditions, choices)
 
 
 """
