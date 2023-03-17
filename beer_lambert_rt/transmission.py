@@ -158,11 +158,22 @@ def select_attenuation_ice(hice):
            | k_thin_ice; hice < 0.1 
     kice = | k_ice; hice >= 0.1
     """
-    return np.select(hice,
-                     [hice < 0.1, hice >= 0.1],
-                     [k_thin_ice, k_ice])
+    conditions = [
+        hice < 0.1,
+        hice >= 0.1,
+    ]
+    choices = [
+        k_thin_ice,
+        k_ice,
+    ]
+    return np.select(conditions, choices)
 
 
+def select_attenuation_snow(hsnow, surface_temperature):
+    """Selects the attenuation coefficient for snow based on 
+    snow depth and surface temperature"""
+    
+    
 def select_surface_transmission(hice, hsnow, hpond, surface_temperature):
     """Selects i_0 based on surface type and temperature"""
     conditions = [
