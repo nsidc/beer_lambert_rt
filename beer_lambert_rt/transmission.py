@@ -283,7 +283,8 @@ def select_transmission(hice, hsnow, hpond, surface_temperature):
     return np.select(condition, choice, None)
 
      
-def calculate_transmission(hice, hsnow, hpond, surface_temperature):
+def calculate_transmittance(hice, hsnow, hpond, surface_temperature,
+                            ssl_parameterization="green_edge"):
     """Returns transmittance for a snow-ice-pond column_stack
 
     :hice: float - scalar or ndarray - ice thickness in m
@@ -294,22 +295,30 @@ def calculate_transmission(hice, hsnow, hpond, surface_temperature):
 
     :returns: bulk transmittance with same dimensions as input.
 
-    N.B. All inputs must be same shape.
+    Parameters are selected based on ice thickness, snow depth, pond depth,
+    and skin temperature.  Parameter selection routines adjust surface scattering layer 
+    thickness, such that h - hssl in esnow and eice evaluate to 1 when hsnow or hice
+    is zero.  The surface transmission parameter i0 is set accordingly.
+
+    If hice is zero, an exception is raised.
+    If hsnow > 0 and hpond > 0. an exeption is raised.  Model does not allow for ponds
+    on snow.
     """
+    if (hice <= 0).any():
+        raise ValueError("One or more hice is zero.  This condition is not allowed")
 
-    #if not (hice.shape == hsnow.shape == hpond.shape):
-    #    raise ValueError("Expects hice, hsnow and hpond to be same shape")
+    if ((hsnow > 0.) & (hpond > 0)).any():
+        raise ValueError("One or more hsnow > 0. and hpond > 0.!")
+    
+    i0 = select_surface_transmission(hice, hsnow, hpond, surface_temperature)
+    hssl_ice = green_edge_hssl_ice(hice, hsnow, hpond)
+    hssl_snow = green_edge_hssl_snow(hsnow, surface_temperature)
+    kice = select_attenuation_ice(hice)
+    ksnow = select_attenuation_snow(hsnow, surface_temperature)
 
-    if (hsnow > 0.):
-        if (surface_temperature > 0.):
-            if (hsnow <= hssl_wet_snow):
-                print("Thin Wet snow covered ice")
-            else:
-                print("Thick wet snow covered ice")
-        else:
-            print("Dry snow covered ice")
-#    else:
-#        if (hice < 0.1):
-#            print("Thin bare ice")
-#        elif (hice >= 0.1) & (hice <
-#    elif (hsnow > hssl_wet_snow)
+    # Evaluates to zero when hsnow is zero
+    esnow = np.exp(-1. * ksnow * (hsnow - hssl_snow))
+
+    eice = np.exp(-1. * kice * (hice - hssl_ice))
+
+    return i0 * esnow * eice
