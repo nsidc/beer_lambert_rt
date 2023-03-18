@@ -30,9 +30,46 @@ from beer_lambert_rt.constants import (hssl_ice, hssl_dry_snow, hssl_wet_snow,
                                        i0_ice, i0_dry_snow, i0_wet_snow, i0_melt_ponds,
                                        albedo_open_water)
 
-def transmission_open_water():
-    """Returns transmittance for open water"""
-    return 1 - albedo_open_water
+
+def surface_type(hice, hsnow, hpond, surface_temperature):
+    conditions = [
+        (hsnow > hssl_wet_snow) & (surface_temperature > 0.),
+        (hsnow <= hssl_wet_snow) & (surface_temperature > 0.),
+        (hsnow > 0.) & (surface_temperature <= 0.),
+        (hsnow == 0.) & (hice > hssl_ice),
+        (hsnow == 0.) & (hice <= hssl_ice),
+        (hpond > 0.),
+    ]
+    choices = [
+        "Wet snow",
+        "Thin wet snow",
+        "Dry snow",
+        "Bare ice",
+        "Thin bare ice",
+        "Melt pond",
+    ]
+    return np.select(conditions, choices)
+
+
+def green_edge_hssl_snow(hsnow, surface_temperature):
+    """Returns thickness of snow surface scattering layer following Green Edge study
+
+    Add reference here
+
+    hssl_snow = hssl_dry_snow
+    if hsnow > hssl_wet_snow and surface_temperature > 0. hssl_wet_snow, zero otherwise
+    """
+    conditions = [
+        (hsnow > 0.) & (surface_temperature <= 0.),
+        (hsnow > hssl_wet_snow) & (surface_temperature > 0.),
+        (hsnow <= hssl_wet_snow) & (surface_temperature > 0.),
+        ]
+    choices = [
+        hssl_dry_snow,
+        hssl_wet_snow,
+        0.
+        ]
+    return np.select(conditions, choices)
 
 
 def green_edge_hssl_ice(hice, hsnow, hpond):
@@ -66,7 +103,7 @@ def green_edge_hssl_ice(hice, hsnow, hpond):
     return np.piecewise(hice, conditions, choices)
 
 
-def cice_hssl_snow(hice, hsnow, hpond, surface_temperature):
+def cice_hssl_snow(hsnow, surface_temperature):
     """Placeholder for CICE style ssl parameterization"""
     raise NotImplemetedError
 
@@ -127,47 +164,6 @@ def select_surface_transmission(hice, hsnow, hpond, surface_temperature):
     return np.select(conditions, choices, None)
 
 
-def green_edge_hssl_snow(hsnow, surface_temperature):
-    """Returns thickness of snow surface scattering layer following Green Edge study
-
-    Add reference here
-
-    hssl_snow = hssl_dry_snow
-    if hsnow > hssl_wet_snow and surface_temperature > 0. hssl_wet_snow, zero otherwise
-    """
-    conditions = [
-        (hsnow > 0.) & (surface_temperature <= 0.),
-        (hsnow > hssl_wet_snow) & (surface_temperature > 0.),
-        (hsnow <= hssl_wet_snow) & (surface_temperature > 0.),
-        ]
-    choices = [
-        hssl_dry_snow,
-        hssl_wet_snow,
-        0.
-        ]
-    return np.select(conditions, choices)
-
-
-def surface_type(hice, hsnow, hpond, surface_temperature):
-    conditions = [
-        (hsnow > hssl_wet_snow) & (surface_temperature > 0.),
-        (hsnow <= hssl_wet_snow) & (surface_temperature > 0.),
-        (hsnow > 0.) & (surface_temperature <= 0.),
-        (hsnow == 0.) & (hice > hssl_ice),
-        (hsnow == 0.) & (hice <= hssl_ice),
-        (hpond > 0.),
-    ]
-    choices = [
-        "Wet snow",
-        "Thin wet snow",
-        "Dry snow",
-        "Bare ice",
-        "Thin bare ice",
-        "Melt pond",
-    ]
-    return np.select(conditions, choices)
-
-
 ssl_scheme_snow = {
     "green_edge": green_edge_hssl_snow,
     "cice": cice_hssl_snow,
@@ -176,6 +172,12 @@ ssl_scheme_ice = {
     "green_edge": green_edge_hssl_ice,
     "cice": cice_hssl_ice,
     }
+
+
+def transmission_open_water():
+    """Returns transmittance for open water"""
+    return 1 - albedo_open_water
+
 
 def calculate_transmittance(hice, hsnow, hpond, surface_temperature,
                             ssl_parameterization="green_edge"):
