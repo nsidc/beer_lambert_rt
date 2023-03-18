@@ -117,12 +117,26 @@ def select_attenuation_ice(hice):
     """
     Returns attenuation coefficient of ice based on hice
 
-           | k_thin_ice; hice < 0.1 
-    kice = | k_ice; hice >= 0.1
+    The attenuation coefficient of ice is dependent on the 
+    ice thickness and the thickness of the surface scattering
+    layer.  If ice thickness is less than or equal to the
+    thickness of the surface scattering layer, the attenuation
+    is set to a higher value.
+
+           | k_thin_ice; hice < hssl_ice 
+    kice = | 
+           | k_ice; hice >= hssl_ice
+
+    Parameters
+    ----------
+    :hice: scalar or arraylike
+           ice thickness in meters
+
+    :returns: scalar or arraylike with same dimensions as hice
     """
     conditions = [
-        hice < 0.1,
-        hice >= 0.1,
+        hice < hssl_ice,
+        hice >= hssl_ice,
     ]
     choices = [
         k_thin_ice,
