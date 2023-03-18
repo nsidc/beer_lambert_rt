@@ -212,6 +212,26 @@ def green_edge_hssl_snow(hsnow, surface_temperature):
     return np.select(conditions, choices)
 
 
+def surface_type(hice, hsnow, hpond, surface_temperature):
+    conditions = [
+        (hsnow > hssl_wet_snow) & (surface_temperature > 0.),
+        (hsnow <= hssl_wet_snow) & (surface_temperature > 0.),
+        (hsnow > 0.) & (surface_temperature <= 0.),
+        (hsnow == 0.) & (hice > hssl_ice),
+        (hsnow == 0.) & (hice <= hssl_ice),
+        (hpond > 0.),
+    ]
+    choices = [
+        "Wet snow",
+        "Thin wet snow",
+        "Dry snow",
+        "Bare ice",
+        "Thin bare ice",
+        "Melt pond",
+    ]
+    return np.select(conditions, choices)
+
+
 """
 There are several cases:
 
