@@ -1,4 +1,27 @@
-"""Functions and tools to calculate transmittance"""
+"""
+Functions and tools to calculate transmittance
+
+These functions are a refactoring of Julienne Stroeve's Beer-Lambert 
+sea ice radiative transfer model.  The original fundamental function 
+get_f_att_snow of that model comprised if-elif-else statements to 
+set parameters and calculate transmittance.  
+
+Parameters are now set using a sequence of functions that use
+np.piecewise and np.select to parameter values.  The main function
+to calculate transmittance has been vectorized.  See the underice_light.ipynb
+for an deeper explanation.
+
+Parameters are selected for several cases:
+
+- dry snow over ice
+- wet snow over ice
+- thin wet snow over ice - thin snow is hsnow < SSL_snow
+- bare ice hice > 0.8
+- bare ice 0.5 =< hice <= 0.8
+- bare ice 0.1 < hice < 0.5
+- bare ice hice < 0.1
+
+"""
 
 import numpy as np
 
@@ -251,18 +274,6 @@ def surface_type(hice, hsnow, hpond, surface_temperature):
     ]
     return np.select(conditions, choices)
 
-
-"""
-There are several cases:
-
-- dry snow over ice - no SSL
-- wet snow over ice - 3 cm SSL - wet snow defined by surface_temperature > 0.
-- thin wet snow over ice - hsnow < SSL_snow
-- bare ice > 0.8
-- bare ice 0.5 =< hice <= 0.8
-- bare ice 0.1 < hice < 0.5
-- bare ice hice < 0.1
-"""
 
 ssl_scheme_snow = {
     "green_edge": green_edge_hssl_snow,
