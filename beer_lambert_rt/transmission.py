@@ -273,34 +273,6 @@ There are several cases:
 - bare ice hice < 0.1
 """
 
-def select_transmission(hice, hsnow, hpond, surface_temperature):
-    """Returns trasnmission function based on snow depth, ice thickness
-       and surface temperature
-
-    Distinguishes between wet and dry snow based on surface temperature
-    Shallow and deep snow packs are based whether or not snow is deeper than snow SSL_snow
-    
-    :hice: float - scalar or ndarray - ice thickness in m
-    :hsnow: float - scalar or ndarray - snow depth in m
-    :hpond: float - scalar or ndarray - pond depth in m.  If hpond > 0, hsnow must
-            be zero.  Raises an ValueError exception.
-    :surface_temperature: float - scalar or ndarray - surface temperature in deg. C
-
-    """
-    conditions_lut = {
-        "dry_snow": (hsnow > 0.) & (surface_temperature <= 0.),
-        "shallow_wet_snow": (hsnow > 0.) & (hsnow <= hssl_wet_snow) & (surface_temperature > 0.),
-        "deep_wet_snow": (hsnow > hssl_wet_snow) & (surface_temperature > 0.),
-        "thick_ice": (hsnow == 0.) & (hice > 0.8),
-        "medium_ice1": (hsnow == 0.) & (hice >= 0.5) & (hice <= 0.8),
-        "medium_ice2": (hsnow == 0.) & (hice >= 0.1) & (hice < 0.5),
-        "thin_ice": (hsnow == 0.) & (hice < 0.1),
-        }
-    condition = conditions_lut.values()
-    choice = conditions_lut.keys()
-    return np.select(condition, choice, None)
-
-     
 def calculate_transmittance(hice, hsnow, hpond, surface_temperature,
                             ssl_parameterization="green_edge"):
     """Returns transmittance for a snow-ice-pond column_stack
