@@ -165,7 +165,7 @@ def select_attenuation_snow(hsnow, surface_temperature):
 def select_surface_transmission(hice, hsnow, hpond, surface_temperature):
     """Selects i_0 based on surface type and temperature"""
     conditions = [
-        hsnow == 0.,
+        (hsnow == 0.) & (hpond <= 0.),
         hpond > 0.,
         (hsnow > 0.) & (surface_temperature < 0.),
         (hsnow > 0.) & (surface_temperature >= 0.),
