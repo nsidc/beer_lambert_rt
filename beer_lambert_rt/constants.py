@@ -8,6 +8,7 @@ albedo_open_water = 0.07  # Albedo of open water
 hssl_ice = 0.1        # Ice
 hssl_dry_snow = 0.0   # Dry snow has no SSL
 hssl_wet_snow = 0.03  # Wet snow
+hssl_thin_wet_snow = 0.0  # Thin wet snow
 
 # Attenuation coefficients - prefixed with k
 k_ice = 1.0        # Ice
