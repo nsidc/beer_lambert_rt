@@ -150,9 +150,9 @@ def select_attenuation_snow(hsnow, surface_temperature):
     """Selects the attenuation coefficient for snow based on 
     snow depth and surface temperature"""
     conditions = [
-        (hsnow > 0.) & (surface_temperature <= 0.),
-        (hsnow > hssl_wet_snow) & (surface_temperature > 0.),
-        (hsnow > 0.) & (hsnow <= hssl_wet_snow) & (surface_temperature > 0.),
+        (hsnow > 0.) & (surface_temperature < 0.),
+        (hsnow > hssl_wet_snow) & (surface_temperature >= 0.),
+        (hsnow > 0.) & (hsnow <= hssl_wet_snow) & (surface_temperature >= 0.),
     ]
     choices = [
         k_dry_snow,
