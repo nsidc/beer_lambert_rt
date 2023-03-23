@@ -61,14 +61,14 @@ def green_edge_hssl_snow(hsnow, surface_temperature):
     if hsnow > hssl_wet_snow and surface_temperature > 0. hssl_wet_snow, zero otherwise
     """
     conditions = [
-        (hsnow > 0.) & (surface_temperature <= 0.),
-        (hsnow > hssl_wet_snow) & (surface_temperature > 0.),
-        (hsnow <= hssl_wet_snow) & (surface_temperature > 0.),
+        (hsnow > 0.) & (surface_temperature < 0.),
+        (hsnow > hssl_wet_snow) & (surface_temperature >= 0.),
+        (hsnow <= hssl_wet_snow) & (surface_temperature >= 0.),
         ]
     choices = [
         hssl_dry_snow,
         hssl_wet_snow,
-        0.
+        hssl_thin_wet_snow,
         ]
     return np.select(conditions, choices)
 
