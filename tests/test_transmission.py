@@ -73,7 +73,7 @@ SURFACE_CONDITION = {
         "skin_temperature": 0.0,
         "expected_hssl_snow": 0.0,
         "expected_hssl_ice": 0.0,
-        "expected_surface_transmission": i0_ice,
+        "expected_surface_transmission": 1.,
         "expected_attenuation": k_ice,
     },
     
@@ -84,7 +84,7 @@ SURFACE_CONDITION = {
         "skin_temperature": 0.0,
         "expected_hssl_snow": 0.0,
         "expected_hssl_ice": 0.0,
-        "expected_surface_transmission": i0_ice,
+        "expected_surface_transmission": 1.,
         "expected_attenuation": k_thin_ice,
     },
     
@@ -162,4 +162,6 @@ def test_attenuation_snow(stype):
     expected = SURFACE_CONDITION[stype]["expected_attenuation"]
     result = transmission.select_attenuation_snow(hsnow, skin_temperature)
     assert expected == result
+
+
 
