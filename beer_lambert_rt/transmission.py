@@ -25,7 +25,8 @@ Parameters are selected for several cases:
 
 import numpy as np
 
-from beer_lambert_rt.constants import (hssl_ice, hssl_dry_snow, hssl_wet_snow,
+from beer_lambert_rt.constants import (hssl_ice, hssl_dry_snow,
+                                       hssl_wet_snow, hssl_thin_wet_snow,
                                        k_ice, k_thin_ice, k_dry_snow, k_wet_snow, k_thin_wet_snow,
                                        i0_ice, i0_dry_snow, i0_wet_snow, i0_melt_ponds,
                                        albedo_open_water)
