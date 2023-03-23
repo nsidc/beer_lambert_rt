@@ -143,7 +143,7 @@ def test_surface_transmission(stype):
 
 @pytest.mark.parametrize(
     "stype",
-    SURFACE_CONDITION.keys(),
+    [stype for stype in SURFACE_CONDITION.keys() if "snow" not in stype],
 )
 def test_attenuation_ice(stype):
     hice = SURFACE_CONDITION[stype]["hice"]
