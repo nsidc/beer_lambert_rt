@@ -152,3 +152,14 @@ def test_attenuation_ice(stype):
     assert expected == result
 
 
+@pytest.mark.parametrize(
+    "stype",
+    [stype for stype in SURFACE_CONDITION.keys() if "snow" in stype],
+)
+def test_attenuation_snow(stype):
+    hsnow = SURFACE_CONDITION[stype]["hsnow"]
+    skin_temperature = SURFACE_CONDITION[stype]["skin_temperature"]
+    expected = SURFACE_CONDITION[stype]["expected_attenuation"]
+    result = transmission.select_attenuation_snow(hsnow, skin_temperature)
+    assert expected == result
+
