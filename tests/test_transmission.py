@@ -19,6 +19,7 @@ SURFACE_CONDITION = {
         "expected_hssl_snow": hssl_dry_snow,
         "expected_hssl_ice": 0.0,
         "expected_surface_transmission": i0_dry_snow,
+        "expected_attenuation": k_dry_snow,
     },
     
     "wet_snow": {
@@ -29,6 +30,7 @@ SURFACE_CONDITION = {
         "expected_hssl_snow": hssl_wet_snow,
         "expected_hssl_ice": 0.0,
         "expected_surface_transmission": i0_wet_snow,
+        "expected_attenuation": k_wet_snow,
     },
     
     "thin_wet_snow": {
@@ -39,6 +41,7 @@ SURFACE_CONDITION = {
         "expected_hssl_snow": hssl_thin_wet_snow,
         "expected_hssl_ice": 0.0,
         "expected_surface_transmission": i0_wet_snow,
+        "expected_attenuation": k_thin_wet_snow,
     },
     
     "thick_bare_ice": {
@@ -49,6 +52,7 @@ SURFACE_CONDITION = {
         "expected_hssl_snow": 0.0,
         "expected_hssl_ice": hssl_ice,
         "expected_surface_transmission": i0_ice,
+        "expected_attenuation": k_ice,
     },
     
     "medium1_bare_ice": {
@@ -59,6 +63,7 @@ SURFACE_CONDITION = {
         "expected_hssl_snow": 0.0,
         "expected_hssl_ice": pytest.approx(0.06666667),
         "expected_surface_transmission": i0_ice,
+        "expected_attenuation": k_ice,
     },
     
     "medium2_bare_ice": {
@@ -69,6 +74,7 @@ SURFACE_CONDITION = {
         "expected_hssl_snow": 0.0,
         "expected_hssl_ice": 0.0,
         "expected_surface_transmission": i0_ice,
+        "expected_attenuation": k_ice,
     },
     
     "thin_bare_ice": {
@@ -79,6 +85,7 @@ SURFACE_CONDITION = {
         "expected_hssl_snow": 0.0,
         "expected_hssl_ice": 0.0,
         "expected_surface_transmission": i0_ice,
+        "expected_attenuation": k_thin_ice,
     },
     
     "melt_pond": {
@@ -89,6 +96,7 @@ SURFACE_CONDITION = {
         "expected_hssl_snow": 0.0,
         "expected_hssl_ice": 0.0,
         "expected_surface_transmission": i0_melt_ponds,
+        "expected_attenuation": k_ice,
     },
     
     }
