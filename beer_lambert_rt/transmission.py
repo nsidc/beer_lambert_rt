@@ -90,9 +90,9 @@ def green_edge_hssl_ice(hice, hsnow, hpond):
     conditions = [
         (hsnow > 0.),
         (hpond > 0.),
-        (hsnow == 0.) & (hice < 0.5),
-        (hsnow == 0.) & (hice >= 0.5) & (hice < 0.8),
-        (hsnow == 0.) & (hice >= 0.8),
+        (hsnow == 0.) & (hpond == 0.) & (hice < 0.5),
+        (hsnow == 0.) & (hpond == 0.) & (hice >= 0.5) & (hice < 0.8),
+        (hsnow == 0.) & (hpond == 0.) & (hice >= 0.8),
     ]
     choices = [
         0.0,
