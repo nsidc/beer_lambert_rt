@@ -52,4 +52,22 @@ Loop through years in year_list
         Transmittance for water is 1 - albedo_water, where albedo_water = 0.7
         However, in line 518 T_ow is set to 1 - alb from APPx
 
-        Calculate weighted average transmissivity        
+        Calculate weighted average transmissivity
+
+
+### Pseudo code for beer_lambert_rt lines 435 to 565
+
+#### Variables
+
+:fn: - output file name
+:f_SIT, f, : - sea ice thickness file, ice concentration file
+
+:f_bi: ice concentration [0-1]
+:hi15: ice thickness distribution [nx, ny, nbin] nbin=15 - code is in l289 to 293
+:h_s: snow depth input grid
+
+:alb: - albedo from APPX
+:temp: - skin temperature from APPX - Kelvin
+:Fsw0: - short wave flux at surface from APPX
+
+
