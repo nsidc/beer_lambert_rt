@@ -65,9 +65,19 @@ Loop through years in year_list
 :f_bi: ice concentration [0-1]
 :hi15: ice thickness distribution [nx, ny, nbin] nbin=15 - code is in l289 to 293
 :h_s: snow depth input grid
+:ds7: snow depth distribution [nx*ny, nbin]
 
 :alb: - albedo from APPX
 :temp: - skin temperature from APPX - Kelvin
 :Fsw0: - short wave flux at surface from APPX
 
+underice_flux2par = 3.5   - from Eq 10
+openwater_flux2par = 2.3  - from Eq 9 Stroeve et al
 
+Total flux is:
+
+ice_transmittance = (1 - albedo) * mean_grid_transmittance
+ow_transmittance = (1 - albedo)
+
+surface_swflux * [(ice_transmittance * sic * underice_flux2par) +
+                  (ow_transmittance * (1 - sic) * openwater_flux2par)]
