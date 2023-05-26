@@ -4,7 +4,7 @@ import numpy as np
 from scipy.stats import skewnorm
 
 
-def ice_thickness_distribution(ice_thickness, nclass=15):
+def ice_thickness_distribution(ice_thickness):
     """Returns an ice thickness distribution for a mean ice thickness.
     
     The distribution is based on the ITD used in Castro Morales et al 2015.
@@ -15,18 +15,22 @@ def ice_thickness_distribution(ice_thickness, nclass=15):
     Arguments
     ---------
     :hi: mean ice thickness
-    :nclass: number of classes
     
     Returns
     -------
     tuple (bins, pdf)
     """
+    ice_thickness_prob = np.array([0.0646, 0.1415, 0.173, 0.1272, 0.1114,
+                                   0.0824, 0.0665, 0.0541, 0.0429, 0.0347,
+                                   0.0287, 0.024, 0.0194, 0.016, 0.0136])
+
     max_hice_factor = 3.
-    bin_width = max_hice_factor / nclass
-    bins = np.arange(bin_width/2., max_hice_factor, bin_width) * ice_thickness
-    pdf = np.array([0.0646, 0.1415, 0.173, 0.1272, 0.1114, 0.0824, 0.0665,
-                     0.0541, 0.0429, 0.0347, 0.0287, 0.024, 0.0194, 0.016, 0.0136])
-    return (bins, pdf)
+    nbins = 15
+    ice_thickness_bins = get_bins(ice_thickness, nbins=nbins, factor=max_ice_factor)
+
+    #bin_width = max_hice_factor / nclass
+    #bins = np.arange(bin_width/2., max_hice_factor, bin_width) * ice_thickness
+    return (ice_thickness_bins, ice_thickness_prob)
 
 
 # Put these in script
@@ -105,8 +109,8 @@ def snow_depth_distribution(snow_depth, nbins=7, factor = 3):
     To solve this fraction is normalized by the sum of fraction.
     """
     
-    edge, width = get_bins(snow_depth_mean, nbins=nbins, factor=factor)
-    std_edge = standardize_snow_depth(edge, snow_depth_mean)
+    edge, width = get_bins(snow_depth, nbins=nbins, factor=factor)
+    std_edge = standardize_snow_depth(edge, snow_depth)
 
     prob = snow_depth_anomaly_distribution().cdf(std_edge)
     fraction = np.diff(prob)
