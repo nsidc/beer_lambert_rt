@@ -31,15 +31,15 @@ def ice_thickness_distribution(ice_thickness):
     -------
     tuple (bins, pdf)
     """
-    ice_thickness_prob = np.array([0.0646, 0.1415, 0.173, 0.1272, 0.1114,
-                                   0.0824, 0.0665, 0.0541, 0.0429, 0.0347,
-                                   0.0287, 0.024, 0.0194, 0.016, 0.0136])
+    prob = np.array([0.0646, 0.1415, 0.173, 0.1272, 0.1114,
+                     0.0824, 0.0665, 0.0541, 0.0429, 0.0347,
+                     0.0287, 0.024, 0.0194, 0.016, 0.0136])
 
     max_ice_factor = 3.
     nbins = 15
-    ice_thickness_bins = get_bins(ice_thickness, nbins=nbins, factor=max_ice_factor,
+    edge, width = get_bins(ice_thickness, nbins=nbins, factor=max_ice_factor,
                                   loc='center')
-    return (ice_thickness_bins, ice_thickness_prob)
+    return (edge, prob)
 
 
 # Put these in script
@@ -86,7 +86,7 @@ def get_bins(xmean, nbins=7, factor=2., loc=None):
     return edges, width
 
 
-def snow_depth_distribution(snow_depth, nbins=7, factor = 3):
+def snow_depth_distribution(snow_depth, nbins=7, factor=3.):
     """Returns a discrete snow depth distribution
     
     :snow_depth: mean snow depth
