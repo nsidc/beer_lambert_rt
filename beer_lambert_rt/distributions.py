@@ -4,6 +4,17 @@ import numpy as np
 from scipy.stats import skewnorm
 
 
+"""Returns skewnorm distribution for snow depth anomalies from
+Mallet et al (2021).
+
+:returns: scipy rv_continuous class for skewnorm dist
+"""
+skewness = 2.54
+location = -1.11
+scale = 1.5
+snow_depth_anomaly_distribution = skewnorm(skewness, location, scale)
+
+
 def ice_thickness_distribution(ice_thickness):
     """Returns an ice thickness distribution for a mean ice thickness.
     
@@ -24,12 +35,10 @@ def ice_thickness_distribution(ice_thickness):
                                    0.0824, 0.0665, 0.0541, 0.0429, 0.0347,
                                    0.0287, 0.024, 0.0194, 0.016, 0.0136])
 
-    max_hice_factor = 3.
+    max_ice_factor = 3.
     nbins = 15
-    ice_thickness_bins = get_bins(ice_thickness, nbins=nbins, factor=max_ice_factor)
-
-    #bin_width = max_hice_factor / nclass
-    #bins = np.arange(bin_width/2., max_hice_factor, bin_width) * ice_thickness
+    ice_thickness_bins = get_bins(ice_thickness, nbins=nbins, factor=max_ice_factor,
+                                  loc='center')
     return (ice_thickness_bins, ice_thickness_prob)
 
 
@@ -49,19 +58,6 @@ def standardize_snow_depth(snow_depth, snow_depth_mean):
     :returns: array of standardized snow depths
     """
     return (snow_depth - snow_depth_mean) / snow_depth_std(snow_depth_mean)
-
-
-def snow_depth_anomaly_distribution():
-    """Returns skewnorm distribution for snow depth anomalies from
-    Mallet et al (2021).
-    
-    :returns: scipy rv_continuous class for skewnorm dist
-    """
-    skewness = 2.54
-    location = -1.11
-    scale = 1.5
-    rv = skewnorm(skewness, location, scale)
-    return rv
 
 
 def get_bins(xmean, nbins=7, factor=2., loc=None):
@@ -112,7 +108,7 @@ def snow_depth_distribution(snow_depth, nbins=7, factor = 3):
     edge, width = get_bins(snow_depth, nbins=nbins, factor=factor)
     std_edge = standardize_snow_depth(edge, snow_depth)
 
-    prob = snow_depth_anomaly_distribution().cdf(std_edge)
+    prob = snow_depth_anomaly_distribution.cdf(std_edge)
     fraction = np.diff(prob)
     fraction = fraction/fraction.sum()  # normailize to 1
     
