@@ -65,17 +65,18 @@ def calculate_flux_and_par(
         skin_temperature: float,
         sea_ice_concentration: float,
         pond_depth=0.,
-        pond_fraction=None,
+        pond_fraction=0.,
         use_distribution=True,
         nsnow_class=7.,
         max_snow_factor=3.,
         nice_class=15.,
         max_ice_factor=3.):
     """Calculates flux and PAR for one input.  Function can be mapped to scalar, 1D and 2D arrays"""
+
     # Calculate transmittance for ice fraction as distribution of single values
-    ice_cover_transmittance = get_mean_transmittance(ice_thickness, snow_depth,
-                                                     pond_depth, surface_temperature,
-                                                     use_distribution=use_distribution)
+    ice_cover_transmittance = get_transmittance(ice_thickness_a, snow_depth_a,
+                                                pond_depth, surface_temperature,
+                                                use_distribution=use_distribution)
 
     # Calculate flux for open water
     # ow_transmittance = (1 - albedo)  # Is this correct?
