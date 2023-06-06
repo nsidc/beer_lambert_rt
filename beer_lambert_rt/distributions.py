@@ -15,7 +15,7 @@ scale = 1.5
 snow_depth_anomaly_distribution = skewnorm(skewness, location, scale)
 
 
-def ice_thickness_distribution(ice_thickness):
+def ice_thickness_distribution(ice_thickness, nbins=15, factor=3.):
     """Returns an ice thickness distribution for a mean ice thickness.
     
     The distribution is based on the ITD used in Castro Morales et al 2015.
@@ -26,6 +26,8 @@ def ice_thickness_distribution(ice_thickness):
     Arguments
     ---------
     :hi: mean ice thickness
+    :nbins: number of bins - fixed and does nothing
+    :factor: maximum ice thickness factor - fixed and does nothing
     
     Returns
     -------
@@ -38,7 +40,7 @@ def ice_thickness_distribution(ice_thickness):
     max_ice_factor = 3.
     nbins = 15
     edge, width = get_bins(ice_thickness, nbins=nbins, factor=max_ice_factor,
-                                  loc='center')
+                           loc='center')
     return (edge, prob)
 
 
@@ -115,3 +117,26 @@ def snow_depth_distribution(snow_depth, nbins=7, factor=3.):
     center = (edge[1:] + edge[:-1]) / 2.
     
     return center, fraction
+
+
+def joint_transmission_distribution(ice_thickness_mean, snow_depth_mean, 
+                                    nbins_ice=15, max_factor_ice=3.,
+                                    nbins_snow=7, max_factor_snow=3.):
+    """Returns combined distributions of snow depth and ice thickness, 
+    along with a joint probability (% fraction) of area
+
+    """
+    snow_depth_dist, snow_prob = snow_depth_distribution(snow_depth_mean,
+                                              nbins=nbins_snow,
+                                              factor=max_factor_snow)
+    ice_thickness_dist, ice_prob = ice_thickness_distribution(ice_thickness_mean,
+                                                    nbins=nbins_ice,
+                                                    factor=max_factor_ice)
+    ice_thick_2d, snow_depth_2d = np.meshgrid(ice_thickness_dist,
+                                              snow_depth_dist)
+    joint_prob = np.outer(snow_prob, ice_prob)
+
+    print(snow_depth_2d.shape)
+    print(joint_prob.shape)
+    
+    return ice_thick_2d.flatten(), snow_depth_2d.flatten(), joint_prob.flatten()
