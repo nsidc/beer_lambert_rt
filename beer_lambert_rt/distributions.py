@@ -1,4 +1,12 @@
-"""Functions to define ice thickness and snow depth distributions"""
+"""Functions to define ice thickness and snow depth distributions
+
+_Future Development_
+Ice and Snow distributions should be able to be switched out.  For example,
+use an exponential distribution.  This should be able to be set as a parameter or 
+from the CLI.
+
+Explore defining a multivariate distribution and then quantizing it.
+"""
 
 import numpy as np
 from scipy.stats import skewnorm
