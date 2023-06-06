@@ -52,36 +52,11 @@ def run_model(ice_thickness: float,
     # Flatten arrays or do we need to do this
 
 
+def check_isarray(x):
+    """Checks that x is numpy.ndarray.  If not returns array."""
+    xarr = np.asarray([x]) if np.iscalar(x) else np.asarray(x)
 
-def get_mean_transmittance(ice_thickness,
-                           snow_depth,
-                           pond_depth,
-                           surface_temperature,
-                           use_distribution=True,
-                           nbins_snow=7,
-                           max_factor_snow=3.,
-                           nbins_ice=15,
-                           max_factor_ice=3.):
-    """Returns mean transmittance for a ice_thickness, snow_depth and pond_depth
 
-    Need to add a pond transmittance with pond_fraction"""
-    if use_distribution:
-        hice_arr, hsnow_arr, area_fraction = snow_ice_distribution(ice_thickness,
-                                                                   snow_depth,
-                                                                   nbins_ice,
-                                                                   max_factor_ice,
-                                                                   nbins_snow,
-                                                                   max_factor_snow)
-        hpond_arr = np.full_like(hice_arr, pond_depth)
-        tsurf_arr = np.full_like(hice_arr, surface_temperature)
-        transmittance = calculate_transmittance(hice_arr, hsnow_arr, hpond_arr, tsurf_arr)
-        transmittance = (transmittance * area_fraction).sum()
-    else:
-        transmittance = calculate_transmittance(ice_thickness, snow_depth, pond_depth,
-                                                surface_temperature)
-    return transmittance
-    
-    
 def calculate_flux_and_par(
         ice_thickness: float,
         snow_depth: float,
