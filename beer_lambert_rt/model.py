@@ -1,6 +1,7 @@
 """Main model function and helper functions"""
 
-import beer_lambert_rt.transmission import calculate_transmittance, transmission_open_water
+from beer_lambert_rt.transmission import calculate_transmittance, transmission_open_water
+from beer_lambert_rt.distribution import joint_transmission_distribution
 
 
 def run_model(ice_thickness -> float,
