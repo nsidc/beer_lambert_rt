@@ -50,12 +50,53 @@ def run_model(ice_thickness -> float,
 
 
 
-def calculate_flux_and_par(snow_depth, ...):
+def get_mean_transmittance(ice_thickness,
+                           snow_depth,
+                           pond_depth,
+                           surface_temperature,
+                           use_distribution=True,
+                           nbins_snow=7.
+                           max_factor_snow=3.,
+                           nbins_ice=15.,
+                           max_factor_ice=3.):
+    """Returns mean transmittance for a ice_thickness, snow_depth and pond_depth
+
+    Need to add a pond transmittance with pond_fraction"""
+    if use_distribution:
+        hice_arr, hsnow_arr = joint_transmission_distribution(ice_thickness, snow_depth,
+                                                              nbins_snow, max_factor_snow,
+                                                              nbins_ice, max_factor_ice)
+        hpond_arr = np.full_like(hice_arr, pond_depth)
+        tsurf_arr = np.full_like(hice_arr, surface_temperature)
+        transmittance = calculate_transmittance(hice_arr, hsnow_arr, hpond_arr, tsurf_arr)
+    else:
+        transmittance = calculate_transmittance(ice_thickness, snow_depth, pond_depth,
+                                                surface_temperature)
+    return transmittance
+    
+    
+def calculate_flux_and_par(
+        ice_thickness -> float,
+        snow_depth -> float,
+        albedo -> float,
+        sw_radiation -> float,
+        skin_temperature -> float,
+        sea_ice_concentration -> float,
+        pond_depth=0.,
+        pond_fraction=None.,
+        use_distribution=True,
+        nsnow_class=7.
+        max_snow_factor=3.,
+        nice_class=15.,
+        max_ice_factor=3.):
     """Calculates flux and PAR for one input.  Function can be mapped to scalar, 1D and 2D arrays"""
     # Calculate transmittance for ice fraction as distribution of single values
+    ice_cover_transmittance = get_mean_transmittance(ice_thickness, snow_depth,
+                                                     pond_depth, surface_temperature,
+                                                     use_distribution=use_distribution)
 
     # Calculate flux for open water
-    # ow_transmittance = (1 - albedo)
+    # ow_transmittance = (1 - albedo)  # Is this correct?
     
     # Calculate flux for ice covered portion
     # ice_transmittance = (1 - albedo) * mean_grid_transmittance
