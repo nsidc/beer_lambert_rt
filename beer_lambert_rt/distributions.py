@@ -119,12 +119,23 @@ def snow_depth_distribution(snow_depth, nbins=7, factor=3.):
     return center, fraction
 
 
-def joint_transmission_distribution(ice_thickness_mean, snow_depth_mean, 
-                                    nbins_ice=15, max_factor_ice=3.,
-                                    nbins_snow=7, max_factor_snow=3.):
+def snow_ice_distribution(ice_thickness_mean, snow_depth_mean, 
+                          nbins_ice=15, max_factor_ice=3.,
+                          nbins_snow=7, max_factor_snow=3.):
     """Returns combined distributions of snow depth and ice thickness, 
     along with a joint probability (% fraction) of area
 
+    Arguments
+    ---------
+    :ice_thickness_mean: mean ice thickness in meters
+    :snow_depth_mean: mean snow depth in meters
+
+    Keywords
+    --------
+    :nbins_ice: number of ice bins to use (default=15)
+    :max_factor_ice: maximum ice thickness factor (default=3.)
+    :nbins_snow: number of snow bins to use (default=7)
+    :max_factor_snow: maximum ice thckness factor (default=3.)
     """
     snow_depth_dist, snow_prob = snow_depth_distribution(snow_depth_mean,
                                               nbins=nbins_snow,
@@ -135,8 +146,5 @@ def joint_transmission_distribution(ice_thickness_mean, snow_depth_mean,
     ice_thick_2d, snow_depth_2d = np.meshgrid(ice_thickness_dist,
                                               snow_depth_dist)
     joint_prob = np.outer(snow_prob, ice_prob)
-
-    print(snow_depth_2d.shape)
-    print(joint_prob.shape)
     
     return ice_thick_2d.flatten(), snow_depth_2d.flatten(), joint_prob.flatten()
