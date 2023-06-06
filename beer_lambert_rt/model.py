@@ -9,7 +9,7 @@ def run_model(ice_thickness -> float,
               sw_radiation -> float,
               skin_temperature -> float,
               sea_ice_concentration -> float,
-              pond_depth=1.,
+              pond_depth=0.,
               pond_fraction=None.,
               use_distribution=True,
               nsnow_class=7.
