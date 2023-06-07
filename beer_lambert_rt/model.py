@@ -1,6 +1,7 @@
 """Main model function and helper functions"""
 
 from pathlib import Path
+import warnings
 
 import numpy as np
 import xarray as xr
@@ -117,11 +118,20 @@ def calculate_flux_and_par(
         max_snow_factor=3.,
         nice_class=15.,
         max_ice_factor=3.):
-    """Calculates flux and PAR for one input.  Function can be mapped to scalar, 1D and 2D arrays"""
+    """Calculates flux and PAR for one input.  
+    Function can be mapped to scalar, 1D and 2D arrays
+
+    """
+
+    for arr in [ice_thickness, snow_depth, albedo, sw_radiation,
+                skin_temperature, sea_ice_concentration, pond_depth, pond_fraction]:
+        if not np.isscalar(arr):
+            warnings.warn(f"One or more inputs is not scalar: shape: {arr.shape} "
+                          "This may cause unexpected results", UserWarning)
 
     # Calculate transmittance for ice fraction as distribution of single values
-    ice_cover_transmittance = get_transmittance(ice_thickness_a, snow_depth_a,
-                                                pond_depth, surface_temperature,
+    ice_cover_transmittance = get_transmittance(ice_thickness, snow_depth,
+                                                pond_depth, skin_temperature,
                                                 use_distribution=use_distribution)
 
     # Calculate flux for open water
