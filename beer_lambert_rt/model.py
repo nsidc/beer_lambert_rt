@@ -151,12 +151,12 @@ def calculate_flux_and_par(
     ice_par = ice_swflux * underice_flux2par
     ow_par = ow_swflux * openwater_flux2par
 
-    total_par = ((ice_par * sic) +
-                 (ow_par * (1 - sic)))
+    total_par = ((ice_par * sea_ice_concentration) +
+                 (ow_par * (1 - sea_ice_concentration)))
 
     # Calculate mean flux
-    total_flux = ((ice_swflux * sic) +
-                  (ow_swflux * (1 - sic)))
+    total_flux = ((ice_swflux * sea_ice_concentration) +
+                  (ow_swflux * (1 - sea_ice_concentration)))
                   
     return total_flux, total_par
 
