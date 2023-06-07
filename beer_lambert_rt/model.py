@@ -9,6 +9,7 @@ import pandas as pd
 
 from beer_lambert_rt.transmission import get_transmittance, transmission_open_water
 from beer_lambert_rt.distributions import snow_ice_distribution
+from beer_lambert_rt.constants import underice_flux2par, openwater_flux2par
 
 
 def run_model(ice_thickness: float,
@@ -108,7 +109,7 @@ def calculate_flux_and_par(
         ice_thickness: float,
         snow_depth: float,
         albedo: float,
-        sw_radiation: float,
+        surface_flux: float,
         skin_temperature: float,
         sea_ice_concentration: float,
         pond_depth: float,
@@ -123,36 +124,39 @@ def calculate_flux_and_par(
 
     """
 
-    for arr in [ice_thickness, snow_depth, albedo, sw_radiation,
+    for arr in [ice_thickness, snow_depth, albedo, surface_flux,
                 skin_temperature, sea_ice_concentration, pond_depth, pond_fraction]:
         if not np.isscalar(arr):
             warnings.warn(f"One or more inputs is not scalar: shape: {arr.shape} "
                           "This may cause unexpected results", UserWarning)
 
+    # Get ice cover albedo - check Key user guide
+    ice_albedo = modify_albedo(albedo, sic)
+    
     # Calculate transmittance for ice fraction as distribution of single values
     ice_cover_transmittance = get_transmittance(ice_thickness, snow_depth,
                                                 pond_depth, skin_temperature,
                                                 use_distribution=use_distribution)
+    ice_cover_transmittance = (1 - ice_albedo) * ice_cover_transmittance
 
     # Calculate flux for open water
-    # ow_transmittance = (1 - albedo)  # Is this correct?
+    ow_transmittance = transmission_open_water()
     
-    # Calculate flux for ice covered portion
-    # ice_transmittance = (1 - albedo) * mean_grid_transmittance
-
     # Calculate total flux
-    # ice_swflux = surface_flux * ice_transmittance
-    # ow_swflux = surface_flux * ow_transmittance
+    ice_swflux = surface_flux * ice_cover_transmittance
+    ow_swflux = surface_flux * ow_transmittance
 
-    # ice_par = ice_swflux * underice_flux2par
-    # ow_par = ow_swflux * openwater_flux2par
+    ice_par = ice_swflux * underice_flux2par
+    ow_par = ow_swflux * openwater_flux2par
 
-    # total_par = (ice_par * sic) +
-    #             (ow_par * (1 - sic))
+    total_par = ((ice_par * sic) +
+                 (ow_par * (1 - sic)))
 
     # Calculate mean flux
-
-    return ice_cover_transmittance
+    total_flux = ((ice_swflux * sic) +
+                  (ow_swflux * (1 - sic)))
+                  
+    return total_flux, total_par
 
 
 def load_netcdf():
