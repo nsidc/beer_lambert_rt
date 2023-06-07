@@ -99,4 +99,50 @@ def calculate_flux_and_par(
     #             (ow_par * (1 - sic))
 
     # Calculate mean flux
+
+    return ice_cover_transmittance
+
+
+def load_netcdf():
+    testfile = Path("tests/test_data.nc")
+    return xr.open_dataset(testfile)
+
+
+def load_csv():
+    testfile = Path("tests/test_data.csv")
+    return pd.read_csv(testfile)
+
+
+def main(test_format='nc', use_distribution=True):
+    """Currently code to run model with dummy data"""
+
+    if test_format == "nc":
+        data = load_netcdf()
+    elif test_format == "csv":
+        data = load_csv()
+    else:
+        print(f"{test_format} is unknown test format!")
+
+    result = calculate_flux_and_par(
+        data.ice_thickness,
+        data.snow_depth,
+        data.albedo,
+        data.sw_radiation,
+        data.surface_temperature,
+        data.sea_ice_concentration,
+        use_distribution=use_distribution
+    )
+
+    print(result)
+
+if __name__ == "__main__":
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Runs Beer Lambert RT model")
+    parser.add_argument("--format", "-f", type=str, default="nc")
+    parser.add_argument("--no_distribution", action='store_false')
+        
+    args = parser.parse_args()
+    print(args)
     
+    main(test_format=args.format, use_distribution=args.no_distribution)
