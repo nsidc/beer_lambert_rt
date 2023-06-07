@@ -166,7 +166,9 @@ def load_csv():
 
 
 def main(test_format='nc', use_distribution=True):
-    """Currently code to run model with dummy data"""
+    """Currently code to run model with dummy data
+
+    This will be moved to the CLI directory"""
 
     if test_format == "nc":
         data = load_netcdf()
