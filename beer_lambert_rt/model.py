@@ -53,12 +53,54 @@ def run_model(ice_thickness: float,
     :returns: TBD but PAR, Flux, ????
     """
 
-    # Flatten arrays or do we need to do this
+    fixed_pond_depth = 0.
+    fixed_pond_fraction = 0.
+    
+    # Prepare data - converts to numpy.ndarrays
+    ice_thickness_a = check_isarray(ice_thickness)
+    snow_depth_a = check_isarray(snow_depth)
+    albedo_a = check_isarray(albedo)
+    sw_radiation_a = check_isarray(sw_radiation)
+    skin_temperature_a = check_isarray(skin_temperature)
+    sea_ice_concentration_a = check_isarray(sea_ice_concentration)
+
+    # Ponds are note included in the model yet so set to fixed zero values
+    pond_depth_a = np.full_like(ice_thickness, fixed_pond_depth)
+    pond_fraction_a = np.full_like(ice_thickness, fixed_pond_fraction)
+    
+    # Get input dimensions from ice_thickness.  All other inputs are expected
+    # to have same dimensions.
+    shape = ice_thickness_a.shape
+    
+    # Check all inputs have the same dimensions: except pond_depth and pond_fraction
+    for arr in [ice_thickness_a, snow_depth_a, albedo_a, sw_radiation_a,
+                skin_temperature_a, sea_ice_concentration_a,
+                pond_depth_a, pond_fraction_a]:
+        if arr.shape != shape:
+            raise ValueError("One or more input arrays have mismatched shaped")
+
+
+    zipped = zip(ice_thickness_a.flatten(),
+                 snow_depth_a.flatten(),
+                 albedo_a.flatten(),
+                 sw_radiation_a.flatten(),
+                 skin_temperature_a.flatten(),
+                 sea_ice_concentration_a.flatten(),
+                 pond_depth_a.flatten(),
+                 pond_fraction_a.flatten())
+    result = []
+    for hice, hsnow, alb, swrad, stmp, sic, hpond, pfrac in zipped:
+        r = calculate_flux_and_par(hice, hsnow, alb, swrad,
+                                   stmp, sic, hpond, pfrac,
+                                   use_distribution=use_distribution)
+        result.append(r)
+
+    return np.asarray(result).reshape(shape)
 
 
 def check_isarray(x):
     """Checks that x is numpy.ndarray.  If not returns array."""
-    xarr = np.asarray([x]) if np.iscalar(x) else np.asarray(x)
+    return np.asarray([x]) if np.isscalar(x) else np.asarray(x)
 
 
 def calculate_flux_and_par(
