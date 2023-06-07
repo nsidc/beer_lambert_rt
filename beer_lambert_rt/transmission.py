@@ -198,6 +198,27 @@ def transmission_open_water():
     return 1 - albedo_open_water
 
 
+def modify_albedo(albedo, sea_ice_concentration):
+    """Calculates a modified ice cover albedo from grid cell albedo
+    and sea ice.
+
+    Satellite-derived albedo of a sea ice covered grid cell is a
+    weighted sum of albedo open water and albedo of the ice cover.
+
+    The modified albedo is calculated as:
+
+    albedo' = (albedo - open_water_albedo * (1 - SIC)) / SIC
+
+    Arguments
+    ---------
+    :albedo: grid cell albedo
+    :sea_ice_concentration: sea ice concentration
+
+    :returns: a modified albedo for the non-open water portion of the grid cell
+    """
+    return (albedo - (open_water_albedo * (1 - sea_ice_concentration))) / sea_ice_concentration
+
+    
 def calculate_transmittance(hice, hsnow, hpond, surface_temperature,
                             ssl_parameterization="green_edge"):
     """Returns transmittance for a snow-ice-pond column_stack
