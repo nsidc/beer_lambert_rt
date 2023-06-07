@@ -33,3 +33,8 @@ nice = len(gice_pdf)
 
 # Snow distribution bins
 nsnow = 7.
+
+# Conversion factors for SW flux to PAR
+underice_flux2par = 3.5   # from Eq 10
+openwater_flux2par = 2.3  # from Eq 9 Stroeve et al
+
