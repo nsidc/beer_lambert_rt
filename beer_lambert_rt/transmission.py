@@ -27,9 +27,11 @@ import numpy as np
 
 from beer_lambert_rt.constants import (hssl_ice, hssl_dry_snow,
                                        hssl_wet_snow, hssl_thin_wet_snow,
-                                       k_ice, k_thin_ice, k_dry_snow, k_wet_snow, k_thin_wet_snow,
+                                       k_ice, k_thin_ice, k_dry_snow,
+                                       k_wet_snow, k_thin_wet_snow,
                                        i0_ice, i0_dry_snow, i0_wet_snow, i0_melt_ponds,
                                        albedo_open_water)
+from beer_lambert_rt.distributions import snow_ice_distribution
 
 
 def surface_type(hice, hsnow, hpond, surface_temperature):
@@ -262,8 +264,6 @@ def get_transmittance(ice_thickness,
 
     Need to add a pond transmittance with pond_fraction"""
 
-    fixed_pond_depth = 0
-    
     if use_distribution:
         hice_arr, hsnow_arr, area_fraction = snow_ice_distribution(ice_thickness,
                                                                    snow_depth,
@@ -271,7 +271,7 @@ def get_transmittance(ice_thickness,
                                                                    max_factor_ice,
                                                                    nbins_snow,
                                                                    max_factor_snow)
-        hpond_arr = np.full_like(hice_arr, fixed_pond_depth)
+        hpond_arr = np.full_like(hice_arr, pond_depth)
         tsurf_arr = np.full_like(hice_arr, surface_temperature)
         transmittance = calculate_transmittance(hice_arr, hsnow_arr, hpond_arr, tsurf_arr)
         transmittance = (transmittance * area_fraction).sum()
