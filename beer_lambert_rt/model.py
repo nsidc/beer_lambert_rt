@@ -92,14 +92,18 @@ def run_model(ice_thickness: float,
                  sea_ice_concentration_a.flatten(),
                  pond_depth_a.flatten(),
                  pond_fraction_a.flatten())
-    result = []
+    flux_list = []
+    par_list = []
     for hice, hsnow, alb, swrad, stmp, sic, hpond, pfrac in zipped:
-        r = calculate_flux_and_par(hice, hsnow, alb, swrad,
-                                   stmp, sic, hpond, pfrac,
-                                   use_distribution=use_distribution)
-        result.append(r)
+        flux, par = calculate_flux_and_par(hice, hsnow, alb, swrad,
+                                           stmp, sic, hpond, pfrac,
+                                           use_distribution=use_distribution)
+        flux_list.append(flux)
+        par_list.append(par)
 
-    return np.asarray(result).reshape(shape)
+    flux_arr = np.asarray(flux_list).reshape(shape)
+    par_arr = np.asarray(par_list).reshape(shape)
+    return flux_arr, par_arr
 
 
 def check_isarray(x):
