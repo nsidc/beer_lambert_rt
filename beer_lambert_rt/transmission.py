@@ -216,7 +216,7 @@ def modify_albedo(albedo, sea_ice_concentration):
 
     :returns: a modified albedo for the non-open water portion of the grid cell
     """
-    return (albedo - (open_water_albedo * (1 - sea_ice_concentration))) / sea_ice_concentration
+    return (albedo - (albedo_open_water * (1 - sea_ice_concentration))) / sea_ice_concentration
 
     
 def calculate_transmittance(hice, hsnow, hpond, surface_temperature,

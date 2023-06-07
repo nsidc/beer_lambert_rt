@@ -7,7 +7,9 @@ import numpy as np
 import xarray as xr
 import pandas as pd
 
-from beer_lambert_rt.transmission import get_transmittance, transmission_open_water
+from beer_lambert_rt.transmission import (get_transmittance,
+                                          transmission_open_water,
+                                          modify_albedo)
 from beer_lambert_rt.distributions import snow_ice_distribution
 from beer_lambert_rt.constants import underice_flux2par, openwater_flux2par
 
@@ -131,7 +133,7 @@ def calculate_flux_and_par(
                           "This may cause unexpected results", UserWarning)
 
     # Get ice cover albedo - check Key user guide
-    ice_albedo = modify_albedo(albedo, sic)
+    ice_albedo = modify_albedo(albedo, sea_ice_concentration)
     
     # Calculate transmittance for ice fraction as distribution of single values
     ice_cover_transmittance = get_transmittance(ice_thickness, snow_depth,
