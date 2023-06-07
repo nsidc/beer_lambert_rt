@@ -1,8 +1,12 @@
 """Main model function and helper functions"""
 
-import numpy as np
+from pathlib import Path
 
-from beer_lambert_rt.transmission import calculate_transmittance, transmission_open_water
+import numpy as np
+import xarray as xr
+import pandas as pd
+
+from beer_lambert_rt.transmission import get_transmittance, transmission_open_water
 from beer_lambert_rt.distributions import snow_ice_distribution
 
 
