@@ -175,7 +175,7 @@ def main(test_format='nc', use_distribution=True):
     else:
         print(f"{test_format} is unknown test format!")
 
-    result = calculate_flux_and_par(
+    result = run_model(
         data.ice_thickness,
         data.snow_depth,
         data.albedo,
@@ -184,7 +184,7 @@ def main(test_format='nc', use_distribution=True):
         data.sea_ice_concentration,
         use_distribution=use_distribution
     )
-
+    
     print(result)
 
 if __name__ == "__main__":
