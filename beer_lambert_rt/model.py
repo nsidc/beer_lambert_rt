@@ -33,11 +33,10 @@ def run_model(ice_thickness: float,
     :albedo: surface albedo [0-1] (scalar or array-like)
     :sw_radiation: Shortwave radiation (scalar or array-like)
     :skin_temperature: Skin temperature in degrees C (scalar or array-like)
+    :sea_ice_concentration: Sea ice concentration [0-1] (scalar or array-like).
 
     Keywords
     --------
-    :sea_ice_concentration: Sea ice concentration [0-1] (scalar or array-like).  Default
-                            is 1.
     :pond_depth: pond_depth in meters (scalar or array-like). Ignored if None.
     :pond_fraction: pond_fraction [0-1] (scalar or array-like). Only used if pond-depth
                     is not None. 
