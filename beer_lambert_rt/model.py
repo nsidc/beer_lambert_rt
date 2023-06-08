@@ -18,7 +18,7 @@ def run_model(ice_thickness: float,
               skin_temperature: float,
               sea_ice_concentration: float,
               pond_depth=0.,
-              pond_fraction=None,
+              pond_fraction=0.,
               use_distribution=True,
               nsnow_class=7.,
               max_snow_factor=3.,
@@ -33,11 +33,10 @@ def run_model(ice_thickness: float,
     :albedo: surface albedo [0-1] (scalar or array-like)
     :sw_radiation: Shortwave radiation (scalar or array-like)
     :skin_temperature: Skin temperature in degrees C (scalar or array-like)
+    :sea_ice_concentration: Sea ice concentration [0-1] (scalar or array-like).
 
     Keywords
     --------
-    :sea_ice_concentration: Sea ice concentration [0-1] (scalar or array-like).  Default
-                            is 1.
     :pond_depth: pond_depth in meters (scalar or array-like). Ignored if None.
     :pond_fraction: pond_fraction [0-1] (scalar or array-like). Only used if pond-depth
                     is not None. 
@@ -66,19 +65,20 @@ def run_model(ice_thickness: float,
     sea_ice_concentration_a = check_isarray(sea_ice_concentration)
 
     # Ponds are note included in the model yet so set to fixed zero values
-    pond_depth_a = np.full_like(ice_thickness, fixed_pond_depth)
-    pond_fraction_a = np.full_like(ice_thickness, fixed_pond_fraction)
+    pond_depth_a = np.full_like(ice_thickness_a, fixed_pond_depth)
+    pond_fraction_a = np.full_like(ice_thickness_a, fixed_pond_fraction)
     
     # Get input dimensions from ice_thickness.  All other inputs are expected
     # to have same dimensions.
     shape = ice_thickness_a.shape
     
     # Check all inputs have the same dimensions: except pond_depth and pond_fraction
-    for arr in [ice_thickness_a, snow_depth_a, albedo_a, sw_radiation_a,
-                skin_temperature_a, sea_ice_concentration_a,
-                pond_depth_a, pond_fraction_a]:
+    for i, arr in enumerate([ice_thickness_a, snow_depth_a, albedo_a, sw_radiation_a,
+                             skin_temperature_a, sea_ice_concentration_a,
+                             pond_depth_a, pond_fraction_a]):
         if arr.shape != shape:
-            raise ValueError("One or more input arrays have mismatched shaped")
+            raise ValueError("One or more input arrays have mismatched shaped. "
+                             f"Expects {shape}, got {arr.shape} for input {i}")
 
 
     zipped = zip(ice_thickness_a.flatten(),
