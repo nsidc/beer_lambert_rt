@@ -9,6 +9,9 @@ setup(
     install_requires=[
         'pytest',
         ],
+    scripts=[
+        'cli/run_beer_lambert_rt',
+        ],
     license='license',
     description='A Beer-Lambert radiative transfer model for sea ice',
     long_description=open('README.md').read(),
