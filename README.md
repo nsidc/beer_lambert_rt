@@ -3,9 +3,7 @@
 
 # A Beer-Lambert Radiative Transfer Model
 
-The code in this repository was used to calculate under-ice Photosynthetically Active Radiation for the Arctic Ocean.
-
-The code was used in Stroeve et al (2021)
+The code in this repository is a model to calculate under-ice Photosynthetically Active Radiation for the Arctic Ocean.  The code was initially developed and used to estimate under-ice sunlight and phytoplankton bloom time for the Arctic Ocean in Stroeve et al (2021).  That original code has been refactored and updated to improve model run time and maintainability.
 
 Stroeve J, Vancoppenolle M, Veyssiere G, Lebrun M, Castellani G, Babin M, Karcher M, Landy J, Liston GE and Wilkinson J (2021) A Multi-Sensor and Modeling Approach for Mapping Light Under Sea Ice During the Ice-Growth Season. Front. Mar. Sci. 7:592337. [doi: 10.3389/fmars.2020.592337](https://www.frontiersin.org/articles/10.3389/fmars.2020.592337/full)
 
@@ -27,7 +25,9 @@ Imported dependences are listed in `environment.yml`.
 
 - `numpy` is used for model calculations
 - `xarray` is used to load and write data
+- `pandas` is also used to load and write data
 - `matplotlib` and `cartopy` are used for plotting
+- `scipy` is used to estimate snow depth distributions
 - `pytest` is used for code testing.
 
 
@@ -40,7 +40,10 @@ Imported dependences are listed in `environment.yml`.
 3. `cd beer-lambert-rt`
 4. It is recommended to setup a new virtual environment to run the model.
    `conda env create -f environment.yml`
-5. The package is written with tests.  To ensure that the code runs as expected run `pytest` from the command line.
+5. Install the package using
+   `pip install -e .
+   This creates an editable installed version of the `beer_lambert_rt` package.
+6. The package is written with tests.  To ensure that the code runs as expected run `pytest` from the command line.
    ```
    $ pytest
    ====================== test session starts ==============================================
@@ -56,8 +59,26 @@ Imported dependences are listed in `environment.yml`.
 
 ## Usage
 
-{usage}: Describe how to use this software, with platform-specific instructions
-      if necessary.
+The radiative transfer model can be run within a script or directly from the command line.
+
+### Running from the command line
+
+The command line tool requires a netCDF or csv file that contain ice
+thickness, snow depth, pond depth, pond fraction, sea ice
+concentration, shortwave surface flux and skin temperature.  The
+expected variable names and units are given in table 1 below.
+
+_Add table_
+
+The model is run with the command
+
+```
+python run_beer_lambert_rt <file_path>
+```
+
+### Running from a script or Jupyter Notebook
+
+
 
 ## Contributing
 We welcome issues and pull requests.  See the [contributing guide]() to contribute.
