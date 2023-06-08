@@ -29,12 +29,15 @@ gice_pdf = np.array([0.0646, 0.1415, 0.173,
                      0.0665, 0.0541, 0.0429,
                      0.0347, 0.0287, 0.024,
                      0.0194, 0.016, 0.0136])
-nice = len(gice_pdf)
+nbins_ice = len(gice_pdf)
+max_factor_ice = 3.
 
 # Snow distribution bins
-nsnow = 7.
+nbins_snow = 7
+max_factor_snow = 3.
 
 # Conversion factors for SW flux to PAR
 underice_flux2par = 3.5   # from Eq 10
 openwater_flux2par = 2.3  # from Eq 9 Stroeve et al
 
+# Add snow distribution to constants
