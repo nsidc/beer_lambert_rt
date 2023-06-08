@@ -78,6 +78,76 @@ python run_beer_lambert_rt <file_path>
 
 ### Running from a script or Jupyter Notebook
 
+The `beer_lambert_rt.model.run_model` function executes the model.
+Input parameters can be passed as scalars, `numpy.ndarray` arrays,
+`xarray.DataArrays`, or `pandas.Series`.
+
+From a python interpreter or IPython session...
+
+```
+# Import the run_model function 
+In [1]: from beer_lambert_rt.model import run_model
+
+# Print the docstring
+In [2]: run_model?
+Signature:
+run_model(
+    ice_thickness: float,
+    snow_depth: float,
+    albedo: float,
+    sw_radiation: float,
+    skin_temperature: float,
+    sea_ice_concentration: float,
+    pond_depth=0.0,
+    pond_fraction=0.0,
+    use_distribution=True,
+    nsnow_class=7.0,
+    max_snow_factor=3.0,
+    nice_class=15.0,
+    max_ice_factor=3.0,
+)
+Docstring:
+Runs Beer-Lambert RT model
+
+Arguments
+---------
+:ice_thickness: (float) ice thickness in meters (scalar or array-like)
+:snow_depth: (float) snow depth in meters (scalar or array-like)
+:albedo: surface albedo [0-1] (scalar or array-like)
+:sw_radiation: Shortwave radiation (scalar or array-like)
+:skin_temperature: Skin temperature in degrees C (scalar or array-like)
+:sea_ice_concentration: Sea ice concentration [0-1] (scalar or array-like).
+
+Keywords
+--------
+:pond_depth: pond_depth in meters (scalar or array-like). Ignored if None.
+:pond_fraction: pond_fraction [0-1] (scalar or array-like). Only used if pond-depth
+                is not None. 
+:use_distribution: (boolean) Use ice_thickness and snow_depth to define snow and 
+                   ice distribution. Default=True,
+:nsnow_class: Number of snow classes in snow depth distribution (scalar) Default=7.
+:max_snow_factor: Set maximum snow depth in distribution as max_snow_factor*snow_depth
+                  Default=3.,
+:nice_class: **Not Used** Number of ice classes in ice thickness distribution (scalar) 
+             Default=15.
+:max_ice_factor: **Not Used** Set maximum ice thickness as max_ice_factor*ice_thickness
+                 Default=3.
+
+:returns: TBD but PAR, Flux, ????
+File:      ~/src/beer_lambert_rt/beer_lambert_rt/model.py
+Type:      function
+
+# Run the model for a single input passed as scalars
+In [3]: run_model(1.5, 0.3, 0.8, 100., -5., 1.)
+Out[3]: (array([1.18633448]), array([4.15217068]))
+```
+
+`run_model` returns short wave radiative flux at the base of the sea
+ice and the flux expressed as Photosynthetically Active Radiation
+(PAR).
+
+See `run_beer_lambert_rt.ipynb` Jupyter Notebook in the `notebooks`
+directory for further examples of running the model interactively.
 
 
 ## Contributing
