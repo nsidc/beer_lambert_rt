@@ -23,6 +23,8 @@ Parameters are selected for several cases:
 
 """
 
+import warnings
+
 import numpy as np
 
 from beer_lambert_rt.constants import (hssl_ice, hssl_dry_snow,
@@ -284,6 +286,11 @@ def get_transmittance(ice_thickness,
     Currently, pond_depth is set to zero.
 
     Need to add a pond transmittance with pond_fraction"""
+
+    # For performance testing
+    warnings.warn("get_transmittance returning dummy transmittance variable!",
+                  UserWarning)
+    return 0.5
 
     if use_distribution:
         hice_arr, hsnow_arr, area_fraction = snow_ice_distribution(ice_thickness,
