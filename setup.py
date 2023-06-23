@@ -8,6 +8,10 @@ setup(
     packages=["beer_lambert_rt"],
     install_requires=[
         'pytest',
+        'numpy',
+        'scipy',
+        'netcdf4',
+        'bottleneck',
         ],
     scripts=[
         'cli/run_beer_lambert_rt',
