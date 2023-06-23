@@ -81,3 +81,6 @@ ow_transmittance = (1 - albedo)
 
 surface_swflux * [(ice_transmittance * sic * underice_flux2par) +
                   (ow_transmittance * (1 - sic) * openwater_flux2par)]
+
+
+Robbies data https://github.com/robbiemallett/light_sub_km/blob/main/use_quantiles.ipynb
