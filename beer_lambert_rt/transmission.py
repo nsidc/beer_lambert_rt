@@ -288,9 +288,9 @@ def get_transmittance(ice_thickness,
     Need to add a pond transmittance with pond_fraction"""
 
     # For performance testing
-    warnings.warn("get_transmittance returning dummy transmittance variable!",
-                  UserWarning)
-    return 0.5
+#    warnings.warn("get_transmittance returning dummy transmittance variable!",
+#                  UserWarning)
+#    return 0.5
 
     if use_distribution:
         hice_arr, hsnow_arr, area_fraction = snow_ice_distribution(ice_thickness,
