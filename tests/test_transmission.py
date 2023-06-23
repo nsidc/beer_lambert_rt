@@ -1,4 +1,5 @@
 import pytest
+import numpy as np
 
 import beer_lambert_rt.transmission as transmission
 
@@ -164,4 +165,18 @@ def test_attenuation_snow(stype):
     assert expected == result
 
 
-
+@pytest.mark.parametrize(
+    "ndim,use_distribution",
+    [(1,False), (2,False), (4,False),
+     (1,True), (2,True), (4,True)],
+    )
+def test_get_transmittance(ndim, use_distribution):
+    """checks get_transmittance returns same dimension array as inputs"""
+    ice_thickness = np.array([1.5])
+    snow_depth = np.array([0.3])
+    pond_depth = np.array([0.0])
+    skin_temperature = np.array([-5.])
+    result = transmission.get_transmittance(ice_thickness, snow_depth,
+                                            pond_depth, skin_temperature,
+                                            use_distribution=use_distribution)
+    assert result.shape == ice_thickness.shape
