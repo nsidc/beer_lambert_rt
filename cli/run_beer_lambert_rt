@@ -1,10 +1,11 @@
 """CLI to run the Beer Lambert RT model"""
+from pathlib import Path
 
 from beer_lambert_rt.model import run_model
 import beer_lambert_rt.io as io  #test_datapath, load_data, make_netcdf, make_outpath
 
 
-def main(outformat="nc", test_format='nc', use_distribution=True,
+def main(input_file, outformat="nc", use_distribution=True,
          verbose=False):
     """Currently code to run model with dummy data
 
@@ -13,13 +14,11 @@ def main(outformat="nc", test_format='nc', use_distribution=True,
     """
 
     if verbose:
-        print("TESTING MODE")
-        print(f"test_format: {test_format}")
+        print(f"input_file: {input_file}")
         print(f"outformat: {outformat}")
         print(f"use_distribution: {use_distribution}")
     
-    # For testing
-    input_file = io.test_datapath(test_format)
+    input_file = Path(input_file)
     data = io.load_data(input_file)
     
     flux, par = run_model(
@@ -49,6 +48,8 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(description="Runs Beer Lambert RT model")
+    parser.add_argument("input_file", type=str,
+                        help="path to input file, can be netcdf or csv")
     parser.add_argument("--format", "-f", type=str, default="nc")
     parser.add_argument("--no_distribution", action='store_false')
     parser.add_argument("--output_format", "-of", type=str, default="nc",
@@ -56,7 +57,8 @@ if __name__ == "__main__":
     parser.add_argument("--verbose", "-v", action="store_true")
         
     args = parser.parse_args()
-#    print(args)
     
-    main(outformat=args.output_format, test_format=args.format,
-         use_distribution=args.no_distribution, verbose=args.verbose)
+    main(args.input_file,
+         outformat=args.output_format, 
+         use_distribution=args.no_distribution,
+         verbose=args.verbose)
