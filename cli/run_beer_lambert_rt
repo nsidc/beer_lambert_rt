@@ -5,6 +5,21 @@ from beer_lambert_rt.model import run_model
 import beer_lambert_rt.io as io  #test_datapath, load_data, make_netcdf, make_outpath
 
 
+def check_compatible_outformat(outformat, data):
+    """Checks that requested outformat matches data dimensions
+
+    Only 1D data can be written to csv
+
+    :outformat: str output format
+    :data: input data
+
+    :returns: returns None or raises exception
+    """
+    if (outformat == "csv") * (len(data.dims) > 1):
+        raise RuntimeError("Cannot write 2D data to pandas.DataFrame")
+    return None
+        
+    
 def main(input_file, outformat="nc", use_distribution=True,
          verbose=False):
     """Currently code to run model with dummy data
@@ -20,7 +35,13 @@ def main(input_file, outformat="nc", use_distribution=True,
     
     input_file = Path(input_file)
     data = io.load_data(input_file)
-    
+
+    try:
+        check_compatible_outformat(outformat, data)
+    except Exception as err:
+        print(err)
+        return
+        
     flux, par = run_model(
         data.ice_thickness,
         data.snow_depth,
@@ -31,17 +52,16 @@ def main(input_file, outformat="nc", use_distribution=True,
         use_distribution=use_distribution
     )
 
+    result = io.make_netcdf(flux, par, data.dims, data.coords, input_file)
+    
+    outpath = io.make_outpath(input_file, outformat)
+    if verbose: print(f"Writing results to {outpath}")
     if outformat == 'nc':
-        result = io.make_netcdf(flux, par, data.dims, data.coords, input_file)
+        print(result)    
     elif outformat == 'csv':
-        raise NotImplementedError()
+        print(result.to_pandas())
     else:
         raise ValueError("Unknown output format")
-
-    outpath = io.make_outpath(input_file, outformat)
-    print(outpath)
-    
-    print(result)
 
 
 if __name__ == "__main__":
