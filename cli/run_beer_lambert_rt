@@ -4,13 +4,20 @@ from beer_lambert_rt.model import run_model
 import beer_lambert_rt.io as io  #test_datapath, load_data, make_netcdf, make_outpath
 
 
-def main(outformat="nc", test_format='nc', use_distribution=True):
+def main(outformat="nc", test_format='nc', use_distribution=True,
+         verbose=False):
     """Currently code to run model with dummy data
 
     Move data to inside run_model
     Enable input of scalar values from command line
     """
 
+    if verbose:
+        print("TESTING MODE")
+        print(f"test_format: {test_format}")
+        print(f"outformat: {outformat}")
+        print(f"use_distribution: {use_distribution}")
+    
     # For testing
     input_file = io.test_datapath(test_format)
     data = io.load_data(input_file)
@@ -46,9 +53,10 @@ if __name__ == "__main__":
     parser.add_argument("--no_distribution", action='store_false')
     parser.add_argument("--output_format", "-of", type=str, default="nc",
                         help="Format of output file (default is netcdf - recommended)")
+    parser.add_argument("--verbose", "-v", action="store_true")
         
     args = parser.parse_args()
 #    print(args)
     
     main(outformat=args.output_format, test_format=args.format,
-         use_distribution=args.no_distribution)
+         use_distribution=args.no_distribution, verbose=args.verbose)
