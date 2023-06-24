@@ -56,13 +56,10 @@ def main(input_file, outformat="nc", use_distribution=True,
     
     outpath = io.make_outpath(input_file, outformat)
     if verbose: print(f"Writing results to {outpath}")
-    if outformat == 'nc':
-        print(result)    
-    elif outformat == 'csv':
-        print(result.to_pandas())
-    else:
-        raise ValueError("Unknown output format")
+    io.write_results(result, outpath)
 
+    return
+    
 
 if __name__ == "__main__":
     import argparse
@@ -70,7 +67,6 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Runs Beer Lambert RT model")
     parser.add_argument("input_file", type=str,
                         help="path to input file, can be netcdf or csv")
-    parser.add_argument("--format", "-f", type=str, default="nc")
     parser.add_argument("--no_distribution", action='store_false')
     parser.add_argument("--output_format", "-of", type=str, default="nc",
                         help="Format of output file (default is netcdf - recommended)")

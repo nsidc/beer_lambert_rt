@@ -134,3 +134,19 @@ def ismyconstant(member):
 def constants_to_dict():
     """Returns a dict of constants"""
     return {member[0]: member[1] for member in inspect.getmembers(constants) if ismyconstant(member)}
+
+
+def write_results(result, outpath):
+    """Writes results to file
+
+    :result: xarray.Dataset containing results
+    :outpath: pathlib.Path object for output filename
+    
+    :returns: None
+    """
+    if outpath.suffix == '.nc':
+        result.to_netcdf(outpath)
+    elif outpath.suffix == '.csv':
+        result.to_pandas().to_csv(outpath)
+    else:
+        raise ValueError("Unknown output format")
