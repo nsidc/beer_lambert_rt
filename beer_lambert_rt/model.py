@@ -80,27 +80,27 @@ def run_model(ice_thickness: float,
             raise ValueError("One or more input arrays have mismatched shaped. "
                              f"Expects {shape}, got {arr.shape} for input {i}")
 
-    ice_thickness_a = ice_thickness_a.flatten()
-    snow_depth_a = snow_depth_a.flatten()
-    albedo_a = albedo_a.flatten()
-    sw_radiation_a = sw_radiation_a.flatten()
-    skin_temperature_a = skin_temperature_a.flatten()
-    sea_ice_concentration_a = sea_ice_concentration_a.flatten()
-    pond_depth_a = pond_depth_a.flatten()
-    pond_fraction_a = pond_fraction_a.flatten()
 
-    flux, par = calculate_flux_and_par(
-        ice_thickness_a,
-        snow_depth_a,
-        albedo_a,
-        sw_radiation_a,
-        skin_temperature_a,
-        sea_ice_concentration_a,
-        pond_depth_a,
-        pond_fraction_a,
-        use_distribution=use_distribution)
+    zipped = zip(ice_thickness_a.flatten(),
+                 snow_depth_a.flatten(),
+                 albedo_a.flatten(),
+                 sw_radiation_a.flatten(),
+                 skin_temperature_a.flatten(),
+                 sea_ice_concentration_a.flatten(),
+                 pond_depth_a.flatten(),
+                 pond_fraction_a.flatten())
+    flux_list = []
+    par_list = []
+    for hice, hsnow, alb, swrad, stmp, sic, hpond, pfrac in zipped:
+        flux, par = calculate_flux_and_par(hice, hsnow, alb, swrad,
+                                           stmp, sic, hpond, pfrac,
+                                           use_distribution=use_distribution)
+        flux_list.append(flux)
+        par_list.append(par)
 
-    return flux, par
+    flux_arr = np.asarray(flux_list).reshape(shape)
+    par_arr = np.asarray(par_list).reshape(shape)
+    return flux_arr, par_arr
 
 
 def check_isarray(x):
@@ -126,6 +126,12 @@ def calculate_flux_and_par(
     Function can be mapped to scalar, 1D and 2D arrays
 
     """
+
+    for arr in [ice_thickness, snow_depth, albedo, surface_flux,
+                skin_temperature, sea_ice_concentration, pond_depth, pond_fraction]:
+        if not np.isscalar(arr):
+            warnings.warn(f"One or more inputs is not scalar: shape: {arr.shape} "
+                          "This may cause unexpected results", UserWarning)
 
     # Get ice cover albedo - check Key user guide
     ice_albedo = modify_albedo(albedo, sea_ice_concentration)
