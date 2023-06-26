@@ -47,11 +47,13 @@ def load_netcdf(filepath):
 
 
 def load_csv(filepath):
+    """Loads a csv file into a pandas dataframe and returns it as an
+    xarray dataset"""
     df = pd.read_csv(filepath, index_col=0, parse_dates=True)
     if not all([var in df.columns for var in EXPECTED_VARIABLES]):
         raise KeyError(f"Input file {filepath} must contain columns: "
                        f"{', '.join(EXPECTED_VARIABLES)}")
-    return df
+    return df.to_xarray()
 
 
 def test_datapath(test_format='nc'):
@@ -132,3 +134,19 @@ def ismyconstant(member):
 def constants_to_dict():
     """Returns a dict of constants"""
     return {member[0]: member[1] for member in inspect.getmembers(constants) if ismyconstant(member)}
+
+
+def write_results(result, outpath):
+    """Writes results to file
+
+    :result: xarray.Dataset containing results
+    :outpath: pathlib.Path object for output filename
+    
+    :returns: None
+    """
+    if outpath.suffix == '.nc':
+        result.to_netcdf(outpath)
+    elif outpath.suffix == '.csv':
+        result.to_pandas().to_csv(outpath)
+    else:
+        raise ValueError("Unknown output format")

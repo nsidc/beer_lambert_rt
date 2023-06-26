@@ -1,20 +1,47 @@
 """CLI to run the Beer Lambert RT model"""
+from pathlib import Path
 
 from beer_lambert_rt.model import run_model
 import beer_lambert_rt.io as io  #test_datapath, load_data, make_netcdf, make_outpath
 
 
-def main(outformat="nc", test_format='nc', use_distribution=True):
+def check_compatible_outformat(outformat, data):
+    """Checks that requested outformat matches data dimensions
+
+    Only 1D data can be written to csv
+
+    :outformat: str output format
+    :data: input data
+
+    :returns: returns None or raises exception
+    """
+    if (outformat == "csv") * (len(data.dims) > 1):
+        raise RuntimeError("Cannot write 2D data to pandas.DataFrame")
+    return None
+        
+    
+def main(input_file, outformat="nc", use_distribution=True,
+         verbose=False):
     """Currently code to run model with dummy data
 
     Move data to inside run_model
     Enable input of scalar values from command line
     """
 
-    # For testing
-    input_file = io.test_datapath(test_format)
-    data = io.load_data(input_file)
+    if verbose:
+        print(f"input_file: {input_file}")
+        print(f"outformat: {outformat}")
+        print(f"use_distribution: {use_distribution}")
     
+    input_file = Path(input_file)
+    data = io.load_data(input_file)
+
+    try:
+        check_compatible_outformat(outformat, data)
+    except Exception as err:
+        print(err)
+        return
+        
     flux, par = run_model(
         data.ice_thickness,
         data.snow_depth,
@@ -25,30 +52,32 @@ def main(outformat="nc", test_format='nc', use_distribution=True):
         use_distribution=use_distribution
     )
 
-    if outformat == 'nc':
-        result = io.make_netcdf(flux, par, data.dims, data.coords, input_file)
-    elif outformat == 'csv':
-        raise NotImplementedError()
-    else:
-        raise ValueError("Unknown output format")
-
-    outpath = io.make_outpath(input_file, outformat)
-    print(outpath)
+    result = io.make_netcdf(flux, par, data.dims, data.coords, input_file)
     
-    print(result)
+    outpath = io.make_outpath(input_file, outformat)
+    if verbose: print(f"Writing results to {outpath}")
+    io.write_results(result, outpath)
 
+    return
+    
 
 if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(description="Runs Beer Lambert RT model")
-    parser.add_argument("--format", "-f", type=str, default="nc")
-    parser.add_argument("--no_distribution", action='store_false')
+    parser.add_argument("input_file", type=str,
+                        help="path to input file, can be netcdf or csv")
+    parser.add_argument("--no_distribution", action='store_false',
+                        help="use only ice thickness and snow depth to calculate transmissivity"                             ", default is to use ice thickness and snow depth to estimate "
+                             "multivariate distributions of ice thicknesses and snow depths")
     parser.add_argument("--output_format", "-of", type=str, default="nc",
-                        help="Format of output file (default is netcdf - recommended)")
+                        help="Format of output file (default is netcdf - recommended)",
+                        choices=['nc', 'csv'])
+    parser.add_argument("--verbose", "-v", action="store_true")
         
     args = parser.parse_args()
-#    print(args)
     
-    main(outformat=args.output_format, test_format=args.format,
-         use_distribution=args.no_distribution)
+    main(args.input_file,
+         outformat=args.output_format, 
+         use_distribution=args.no_distribution,
+         verbose=args.verbose)
